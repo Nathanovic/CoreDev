@@ -1,0 +1,17 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\UMLChallenge\MonoBehaviours\Gun.cs">
+    <Files>
+      <File FileName="Assets\UMLChallenge\interfaces.cs" Line="12" Column="9" />
+      <File FileName="Assets\UMLChallenge\DamageInfo.cs" Line="5" Column="21" />
+      <File FileName="Assets\UMLChallenge\MonoBehaviours\Entity.cs" Line="24" Column="4" />
+      <File FileName="Assets\UMLChallenge\MonoBehaviours\ExplosiveBarrel.cs" Line="10" Column="9" />
+      <File FileName="Assets\UMLChallenge\MonoBehaviours\Gun.cs" Line="23" Column="3" />
+      <File FileName="Assets\UMLChallenge\MonoBehaviours\Player.cs" Line="10" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
