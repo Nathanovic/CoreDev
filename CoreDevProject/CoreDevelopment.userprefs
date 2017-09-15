@@ -1,0 +1,17 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Challenges2\monobehaviours\BaseEnemy.cs">
+    <Files>
+      <File FileName="Assets\Challenges2\monobehaviours\Pallisade.cs" Line="7" Column="3" />
+      <File FileName="Assets\Challenges2\interfaces.cs" Line="6" Column="9" />
+      <File FileName="Assets\Challenges2\monobehaviours\StoneWall.cs" Line="7" Column="3" />
+      <File FileName="Assets\Challenges2\monobehaviours\BaseWall.cs" Line="19" Column="18" />
+      <File FileName="Assets\Challenges2\EnemyStats.cs" Line="11" Column="24" />
+      <File FileName="Assets\Challenges2\monobehaviours\BaseEnemy.cs" Line="31" Column="12" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
