@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Challenges1/ChallengesShowOff.unity
+- path: Assets/Challenges2/TinyGame.unity
   isLoaded: 1
   isActive: 1
