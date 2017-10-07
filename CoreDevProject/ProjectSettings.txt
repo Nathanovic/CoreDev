@@ -1,0 +1,8 @@
+----------Sorting order-------------
+background sprites(geen collider): background layer
+de rest: default
+niet kleiner dan 0
+
+----------Scripting conventions-----
+C:\Users\Nathan\Documents\HKU\Jr2\CoreDevOther
+-> Conventions.cs

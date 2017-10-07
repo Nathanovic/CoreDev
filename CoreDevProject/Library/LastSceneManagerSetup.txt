@@ -1,4 +1,7 @@
 sceneSetups:
-- path: Assets/Challenges2/TinyGame.unity
+- path: Assets/Scenes/BaseScene.unity
   isLoaded: 1
   isActive: 1
+- path: Assets/Scenes/Menu.unity
+  isLoaded: 1
+  isActive: 0

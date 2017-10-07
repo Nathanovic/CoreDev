@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{C37AB306-F947-BDF9-24C2-4AFB8A0D6C9A}</ProjectGuid>
+    <ProjectGuid>{77F87CFF-64E0-12EC-3FDC-91F9A78B3AA5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -51,26 +51,40 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Challenges1\Fibonnaci.cs" />
-     <Compile Include="Assets\Challenges1\Looper.cs" />
-     <Compile Include="Assets\Challenges1\MovingSphere.cs" />
-     <Compile Include="Assets\Challenges1\RotateToMousePos.cs" />
-     <Compile Include="Assets\Challenges1\SphereSpawner.cs" />
-     <Compile Include="Assets\Challenges2\EnemyStats.cs" />
-     <Compile Include="Assets\Challenges2\interfaces.cs" />
-     <Compile Include="Assets\Challenges2\monobehaviours\BaseEnemy.cs" />
-     <Compile Include="Assets\Challenges2\monobehaviours\BaseWall.cs" />
-     <Compile Include="Assets\Challenges2\monobehaviours\Goblin.cs" />
-     <Compile Include="Assets\Challenges2\monobehaviours\Pallisade.cs" />
-     <Compile Include="Assets\Challenges2\monobehaviours\StoneWall.cs" />
-     <Compile Include="Assets\Challenges2\monobehaviours\Troll.cs" />
-     <Compile Include="Assets\Challenges2\monobehaviours\Wolf.cs" />
-     <Compile Include="Assets\UMLChallenge\DamageInfo.cs" />
-     <Compile Include="Assets\UMLChallenge\interfaces.cs" />
-     <Compile Include="Assets\UMLChallenge\MonoBehaviours\Entity.cs" />
-     <Compile Include="Assets\UMLChallenge\MonoBehaviours\ExplosiveBarrel.cs" />
-     <Compile Include="Assets\UMLChallenge\MonoBehaviours\Gun.cs" />
-     <Compile Include="Assets\UMLChallenge\MonoBehaviours\Player.cs" />
+     <Compile Include="Assets\_Challenges1\Fibonnaci.cs" />
+     <Compile Include="Assets\_Challenges1\Looper.cs" />
+     <Compile Include="Assets\_Challenges1\MovingSphere.cs" />
+     <Compile Include="Assets\_Challenges1\RotateToMousePos.cs" />
+     <Compile Include="Assets\_Challenges1\SphereSpawner.cs" />
+     <Compile Include="Assets\_Challenges2\EnemyStats.cs" />
+     <Compile Include="Assets\_Challenges2\interfaces.cs" />
+     <Compile Include="Assets\_Challenges2\monobehaviours\BaseEnemy.cs" />
+     <Compile Include="Assets\_Challenges2\monobehaviours\BaseWall.cs" />
+     <Compile Include="Assets\_Challenges2\monobehaviours\Goblin.cs" />
+     <Compile Include="Assets\_Challenges2\monobehaviours\Pallisade.cs" />
+     <Compile Include="Assets\_Challenges2\monobehaviours\StoneWall.cs" />
+     <Compile Include="Assets\_Challenges2\monobehaviours\Troll.cs" />
+     <Compile Include="Assets\_Challenges2\monobehaviours\Wolf.cs" />
+     <Compile Include="Assets\_PoolChallenge\Bullet.cs" />
+     <Compile Include="Assets\_PoolChallenge\BulletPool.cs" />
+     <Compile Include="Assets\_PoolChallenge\Gun.cs" />
+     <Compile Include="Assets\_PoolChallenge\TDSMovement.cs" />
+     <Compile Include="Assets\Scripts\AI.cs" />
+     <Compile Include="Assets\Scripts\AIManager.cs" />
+     <Compile Include="Assets\Scripts\Character.cs" />
+     <Compile Include="Assets\Scripts\EventManager.cs" />
+     <Compile Include="Assets\Scripts\ExtentionMethods.cs" />
+     <Compile Include="Assets\Scripts\FSM\FSM.cs" />
+     <Compile Include="Assets\Scripts\FSM\State.cs" />
+     <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\GameMenu.cs" />
+     <Compile Include="Assets\Scripts\Menu.cs" />
+     <Compile Include="Assets\Scripts\Messenger.cs" />
+     <Compile Include="Assets\Scripts\Pathfinding\Grid.cs" />
+     <Compile Include="Assets\Scripts\Pathfinding\Node.cs" />
+     <Compile Include="Assets\Scripts\Pathfinding\Pathfinding.cs" />
+     <Compile Include="Assets\Scripts\Player.cs" />
+     <Compile Include="Assets\Scripts\TargetingBehaviour.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
