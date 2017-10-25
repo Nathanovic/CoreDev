@@ -41,6 +41,11 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	[SerializeField]private int winTotemCount = 3;
+	private int goodTotemCount = 0;
+
+	private GameMenu menuScript;
+
 	void Awake(){
 		Instance = this;
 
@@ -56,6 +61,10 @@ public class GameManager : MonoBehaviour {
 		if (currentActiveScene.name.StartsWith (levelSceneName)) {
 			myGameState = GameState.playing;
 		}
+	}
+
+	public void InitMenuScript(GameMenu subscriber){
+		menuScript = subscriber;
 	}
 
 	//find the other scene and set it to active
@@ -86,9 +95,11 @@ public class GameManager : MonoBehaviour {
 	public void TogglePause(){
 		if(IsPaused){
 			myGameState = GameState.playing;
+			Time.timeScale = 1f;
 		}
 		else{
 			myGameState = GameState.paused;
+			Time.timeScale = 0f;
 		}
 	}
 
@@ -97,7 +108,7 @@ public class GameManager : MonoBehaviour {
 		StartCoroutine(LoadNewScene(menuSceneName));
 	}
 
-	IEnumerator LoadNewScene(string newSceneName){
+	private IEnumerator LoadNewScene(string newSceneName){
 		SceneManager.UnloadSceneAsync (currentActiveScene);
 		AsyncOperation loadInstruction = SceneManager.LoadSceneAsync (newSceneName, LoadSceneMode.Additive);
 		yield return loadInstruction;
@@ -106,9 +117,22 @@ public class GameManager : MonoBehaviour {
 		SetNewActiveScene (loadedScene);
 	}
 
-	void SetNewActiveScene(Scene targetScene){
+	private void SetNewActiveScene(Scene targetScene){
 		SceneManager.SetActiveScene (targetScene);
 		currentActiveScene = targetScene;
+	}
+
+	public void CaptureTotem(Faction newTotemFaction){
+		if (newTotemFaction == Faction.Good) {
+			goodTotemCount++;
+			if (goodTotemCount == winTotemCount) {
+				menuScript.ShowVictoryPanel ();
+				TogglePause ();
+			}
+		}
+		else {
+			goodTotemCount--;
+		}
 	}
 }
 

@@ -12,7 +12,15 @@ public class Grid : MonoBehaviour {
 	private int gridSizeX;
 	private int gridSizeY;
 
-	void Start(){
+	public int GridSize{
+		get{ 
+			return gridSizeX * gridSizeY;
+		}
+	}
+
+	[SerializeField]private bool displayGridGizmos;
+
+	void Awake(){
 		//how many nodes can we fit into our grid:
 		nodeDiameter = nodeRadius * 2;
 		gridSizeX = Mathf.RoundToInt (gridWorldSize.x / nodeDiameter);
@@ -27,7 +35,7 @@ public class Grid : MonoBehaviour {
 		Vector2 worldBottomLeft = new Vector2(-gridSizeX * 0.5f, -gridSizeY * 0.5f);
 
 		for(int x = 0; x < gridSizeX; x ++){
-			for(int y = 0; y < gridSizeX; y ++){
+			for(int y = 0; y < gridSizeY; y ++){
 				Vector2 worldPoint = worldBottomLeft 
 					+ Vector2.right * (x * nodeDiameter + nodeRadius)
 					+ Vector2.up * (y * nodeDiameter + nodeRadius);
@@ -42,13 +50,18 @@ public class Grid : MonoBehaviour {
 
 		for (int x = -1; x <= 1; x++) {
 			for(int y = -1; y <= 1; y++){
+				//don't add the node itself
 				if (x == 0 && y == 0) {
+					continue;
+				}//dont add diagonal neighbours
+				else if(x != 0 && y != 0){
 					continue;
 				}
 
 				int checkX = node.gridX + x;
 				int checkY = node.gridY + y;
 
+				//check if the node with these coords is within the grid
 				if(checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY){
 					neighbours.Add(grid[checkX, checkY]);
 				}
@@ -69,20 +82,58 @@ public class Grid : MonoBehaviour {
 		return(grid[x,y]);
 	}
 
-	public List<Node> path;
+	#region Accessed by characters:
+	public Vector2 NodePosFromWorldPoint(Vector2 worldPosition){
+		Node n = NodeFromWorldPoint (worldPosition);
+		return n.worldPosition;
+	}
+	public Vector2 PositionFromInstruction(Vector2 playerPos, float x, float y){
+		Node playerNode = NodeFromWorldPoint (playerPos);
+		int nodeX = playerNode.gridX;
+		int nodeY = playerNode.gridY;
+
+		if (x != 0) {
+			if (x > 0)
+				nodeX ++;
+			else
+				nodeX --;
+
+			if (nodeX >= 0 && nodeX < gridSizeX) {
+				Node n = grid [nodeX, nodeY];
+				if (n.walkable) {
+					return n.worldPosition;
+				}
+			}
+			nodeX = playerNode.gridX;
+		}
+		if (y != 0) {
+			if (y > 0)
+				nodeY ++;
+			else
+				nodeY --;
+
+			if (nodeY >= 0 && nodeY < gridSizeY) {
+				Node n = grid [nodeX, nodeY];
+				if (n.walkable) {
+					return n.worldPosition;
+				}
+			}
+		}
+
+		return playerPos;
+	}
+	#endregion
+
 	void OnDrawGizmos(){
 		Gizmos.DrawWireCube (transform.position, new Vector3(gridWorldSize.x, gridWorldSize.y, 0f));
 
-		if (grid != null) {
+		if (grid != null && displayGridGizmos) {
 			foreach(Node n in grid){
 				Color gizmC = (n.walkable) ? Color.green : Color.red;
-				if(path != null && path.Contains(n)){
-					gizmC = Color.white;
-				}
-
 				gizmC.a = 0.5f;
+
 				Gizmos.color = gizmC;
-				Gizmos.DrawCube (n.worldPosition, Vector3.one);
+				Gizmos.DrawCube (n.worldPosition, Vector3.one * (nodeDiameter - 0.05f));
 			}
 		}
 	}

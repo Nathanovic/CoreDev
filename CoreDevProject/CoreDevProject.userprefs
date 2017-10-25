@@ -1,16 +1,39 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Menu.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\LevelObjects\GoodTrap.cs">
     <Files>
-      <File FileName="Assets\Scripts\Character.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AI.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\FSM\State.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\FSM\FSM.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Player.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Pathfinding\Node.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Pathfinding\Pathfinding.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Menu.cs" Line="11" Column="3" />
+      <File FileName="Assets\Scripts\AI\AI.cs" Line="53" Column="8" />
+      <File FileName="Assets\Scripts\LevelObjects\GoodTrap.cs" Line="31" Column="4" />
+      <File FileName="Assets\Scripts\LevelObjects\LevelObject.cs" Line="38" Column="37" />
+      <File FileName="Assets\Scripts\AI\FSM\TrappedState.cs" Line="7" Column="23" />
+      <File FileName="Assets\Scripts\AI\FSM\CaptureState.cs" Line="15" Column="36" />
+      <File FileName="Assets\Scripts\LevelObjects\Totem.cs" Line="28" Column="38" />
+      <File FileName="Assets\Scripts\AI\TargetingBehaviour.cs" Line="47" Column="60" />
+      <File FileName="Assets\Scripts\AI\FSM\ChaseState.cs" Line="64" Column="3" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="CoreDevProject" expanded="True">
+            <Node name="Assembly-CSharp" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="AI" expanded="True">
+                  <Node name="FSM" expanded="True" />
+                </Node>
+                <Node name="LevelObjects" expanded="True">
+                  <Node name="GoodTrap.cs" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State name="__root__">
+          <Node name="CoreDevProject" expanded="True" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

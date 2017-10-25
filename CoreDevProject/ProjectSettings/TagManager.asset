@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Obstacle
+  - AI
+  - Totem
   layers:
   - Default
   - TransparentFX
@@ -16,7 +18,7 @@ TagManager:
   - 
   - Camera
   - Obstacle
-  - 
+  - AI
   - 
   - 
   - 
@@ -44,4 +46,10 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Character
+    uniqueID: 1382716077
+    locked: 0
+  - name: Front
+    uniqueID: 2246567303
     locked: 0
