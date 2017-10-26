@@ -10,10 +10,12 @@ public abstract class Character : MonoBehaviour {
 	protected Grid grid;
 	[SerializeField]protected float moveSpeed = 1f;
 	[HideInInspector]public float currentSpeedFactor = 1f;
-	public Faction myFaction{ get; protected set; }
+	public Faction myFaction;
 
 	public event CharacterEvent onDeath;
 	public event NoParamEvent onReachedTargetNode;
+
+	private bool isDead;
 
 	protected virtual void Start(){
 		grid = FindObjectOfType<Grid> ();
@@ -28,6 +30,14 @@ public abstract class Character : MonoBehaviour {
 
 		if (targetPos == newPos && onReachedTargetNode != null) {
 			onReachedTargetNode ();
+		}
+	}
+
+	public virtual void KillMe(){
+		GetComponent<Collider2D> ().enabled = false;
+		if (!isDead) {
+			isDead = true;
+			onDeath (this);
 		}
 	}
 }

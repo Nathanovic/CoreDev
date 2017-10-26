@@ -5,20 +5,15 @@ public class TrappedState : State {
 
 	public override void Init (AI _target){
 		base.Init (_target);
-		captureScript.onCapturedTotem += EndCapturing;
+		_target.onTrapActivated += EndTrappedState;
 	}
 
-	private void EndCapturing(){
+	private void EndTrappedState(){
 		onState (StateName.patrolling);		
 	}
 
 	//state implementation:
-	public override void Run(){
-		if(baseAI.chaseState.CanChaseTarget()){
-			onState (StateName.chasing);
-		}
-	}
 	public override void Complete(){
-		captureScript.InterruptCapturing ();
+		baseAI.RemoveState (StateName.trapped);
 	}
 }

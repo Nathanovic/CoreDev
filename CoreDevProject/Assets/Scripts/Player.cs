@@ -10,20 +10,36 @@ public class Player : Character {
 
 	private Capture captureScript;
 
+	[SerializeField]private GoodTrap trap;
+	private bool carryingTrap = false;
+
 	protected override void Start(){
 		myFaction = Faction.Good;
 		base.Start();
 		captureScript = GetComponent<Capture> ();
+
+		onDeath += GameManager.Instance.GameOver;
 	}
 
-	void Update(){
+	private void Update(){
 		if (!isMovingToTarget) {
 			OptionalStartMoving ();
+		}
+
+		if(Input.GetKeyUp(KeyCode.Space)){
+			if (carryingTrap) {
+				carryingTrap = false;
+				trap.PlaceMe (transform.GetPosition ());
+			}
+			else if (trap.CanTriggerMe) {
+				carryingTrap = true;
+				trap.Dismantle ();
+			}
 		}
 	}
 
 	//start moving if the player presses move buttons and if the targetNode is walkable
-	void OptionalStartMoving(Vector2 newPos){
+	private void OptionalStartMoving(Vector2 newPos){
 		float instructionX = Input.GetAxis ("Horizontal");
 		float instructionY = Input.GetAxis ("Vertical");
 
@@ -46,11 +62,12 @@ public class Player : Character {
 			StartCoroutine (MoveToTargetPos (targetPosition, waitOneFrame));
 		}
 	}
-	void OptionalStartMoving(){
+
+	private void OptionalStartMoving(){
 		OptionalStartMoving (new Vector2 (0, 0));
 	}
 
-	IEnumerator MoveToTargetPos(Vector2 targetPos, bool waitAtStart){
+	private IEnumerator MoveToTargetPos(Vector2 targetPos, bool waitAtStart){
 		isMovingToTarget = true;
 		if (waitAtStart)
 			yield return null;

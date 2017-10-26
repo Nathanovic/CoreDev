@@ -4,18 +4,25 @@ using System.Collections.Generic;
 [System.Serializable]
 public class PatrolState : State {
 
-	[SerializeField]private Transform[] patrolWaypoints;
+	public Transform[] startingWaypoints;
 	private Vector2[] waypoints;
 	private List<int> patrollableWaypointIndexes = new List<int>();
 	private int waypointIndex = -1;
 
 	public override void Init(AI _target){
 		base.Init(_target);
-		waypoints = new Vector2[patrolWaypoints.Length];
-		for(int i = 0; i < patrolWaypoints.Length; i ++){
+		InitWaypoints (startingWaypoints);
+	}
+
+	public void InitWaypoints(Transform[] _patrolWaypoints){
+		int waypointCount = _patrolWaypoints.Length;
+		waypoints = new Vector2[waypointCount];
+		patrollableWaypointIndexes.Clear ();
+		for(int i = 0; i < waypointCount; i ++){
 			patrollableWaypointIndexes.Add (i);
-			waypoints[i] = patrolWaypoints [i].GetPosition ();
+			waypoints[i] = _patrolWaypoints [i].GetPosition ();
 		}
+		waypointIndex = -1;
 	}
 
 	public void PatrollingSetup(bool fromStartCall){
@@ -39,6 +46,7 @@ public class PatrolState : State {
 	}
 	public override void Run(){
 		baseAI.FollowPath ();
+
 		if (baseAI.CurrentPathState == PathState.none) {
 			PatrollingSetup (false);
 		}

@@ -43,28 +43,43 @@ public class GameManager : MonoBehaviour {
 
 	[SerializeField]private int winTotemCount = 3;
 	private int goodTotemCount = 0;
+	private int evilAICount;
+	private int goodAICount;
 
 	private GameMenu menuScript;
 
-	void Awake(){
+	private void Awake(){
 		Instance = this;
 
-		//check if the active scene is correct (== not the base scene)
-		Scene activeScene = SceneManager.GetActiveScene ();
-		if (activeScene == gameObject.scene) {
-			SetCorrectActiveScene ();	
-		} 
+		if (SceneManager.sceneCount == 1) {
+			StartCoroutine (LoadMenuSceneOnAwake ());
+		}
 		else {
-			currentActiveScene = activeScene;
-		}
+			//check if the active scene is correct (== not the base scene)
+			Scene activeScene = SceneManager.GetActiveScene ();
+			if (activeScene == gameObject.scene) {
+				SetCorrectActiveScene ();	
+			}
+			else {
+				currentActiveScene = activeScene;
+			}
 
-		if (currentActiveScene.name.StartsWith (levelSceneName)) {
-			myGameState = GameState.playing;
+			if (currentActiveScene.name.StartsWith (levelSceneName)) {
+				myGameState = GameState.playing;
+			}
 		}
+	}
+
+	private IEnumerator LoadMenuSceneOnAwake(){
+		yield return SceneManager.LoadSceneAsync (menuSceneName, LoadSceneMode.Additive);
+		SetCorrectActiveScene ();
 	}
 
 	public void InitMenuScript(GameMenu subscriber){
 		menuScript = subscriber;
+	}
+	public void InitAIManager(){
+		AIManager.Instance.onAIChanged += AIEliminated;
 	}
 
 	//find the other scene and set it to active
@@ -125,14 +140,37 @@ public class GameManager : MonoBehaviour {
 	public void CaptureTotem(Faction newTotemFaction){
 		if (newTotemFaction == Faction.Good) {
 			goodTotemCount++;
-			if (goodTotemCount == winTotemCount) {
-				menuScript.ShowVictoryPanel ();
-				TogglePause ();
-			}
+			CheckGameWon ();
 		}
 		else {
 			goodTotemCount--;
 		}
+	}
+
+	public void AddEvilAI(){
+		evilAICount++;
+	}
+
+	private void AIEliminated(AI ai){
+		if (ai.myFaction == Faction.Evil) {
+			evilAICount--;
+			goodAICount++;
+		}
+		else {
+			goodAICount--;
+		}
+
+		CheckGameWon ();
+	}
+
+	private void CheckGameWon(){
+		if (evilAICount == 0 && goodTotemCount == winTotemCount) {	
+			menuScript.ShowEndingPanel (true, goodAICount);			
+		}
+	}
+
+	public void GameOver(Character c){
+		menuScript.ShowEndingPanel (false, goodAICount);
 	}
 }
 

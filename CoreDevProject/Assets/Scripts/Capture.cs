@@ -22,11 +22,11 @@ public class Capture : MonoBehaviour {
 		mainScript = GetComponent<Character> ();
 		mainScript.onDeath += InterruptCapturing;
 		onStartCapturing += StartCapturing;
-		onCapturedTotem += StopCapturing;
+		onCapturedTotem += InterruptCapturing;
 	}
 	
 	private void OnTriggerEnter2D(Collider2D other){
-		if(other.tag == "Totem" && myState == CaptureState.none){
+		if(other.tag == "Totem" && myState == CaptureState.none && targetTotem == null){
 			Totem totem = other.GetComponent<Totem> ();
 			if(totem.CanCaputureMe(myFaction)){
 				mainScript.onReachedTargetNode += ReachedTotem;
@@ -36,7 +36,6 @@ public class Capture : MonoBehaviour {
 	}
 
 	private void ReachedTotem(){
-		mainScript.onReachedTargetNode -= ReachedTotem;
 		if (targetTotem.CanCaputureMe (myFaction)) {
 			onStartCapturing ();
 		}
@@ -45,15 +44,13 @@ public class Capture : MonoBehaviour {
 		myState = CaptureState.capturing;
 		StartCoroutine(targetTotem.CaptureMe (captureTime, onCapturedTotem));
 	}
-	private void StopCapturing(){
-		myState = CaptureState.none;
-		targetTotem.StopCapturing ();
-		targetTotem = null;
-	}
 
 	public void InterruptCapturing(){//tried when the player moves, called by CaptureState when the state is ended
 		if(myState == CaptureState.capturing){
-			StopCapturing ();
+			mainScript.onReachedTargetNode -= ReachedTotem;
+			myState = CaptureState.none;
+			targetTotem.StopCapturing ();
+			targetTotem = null;
 		}
 	}
 	private void InterruptCapturing(Character sender){//called onDeath

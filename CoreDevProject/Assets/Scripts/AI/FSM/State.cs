@@ -14,12 +14,11 @@ public abstract class State {
 	public virtual void Start (){}
 	public virtual void Run (){}
 	public virtual void Complete (){}
-
-	public virtual void Interrupt(){}
 }
 
 public enum StateName{
 	patrolling,
 	chasing,
-	capturing
+	capturing,
+	trapped
 }

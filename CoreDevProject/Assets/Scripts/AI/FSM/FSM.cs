@@ -14,12 +14,16 @@ public class FSM {
 	}
 
 	private AI target;
+
 	private Dictionary<StateName, State> myStates = new Dictionary<StateName, State>();
 	private State currentState;
 
 	public void AddState(StateName stateKey, State newState){
 		myStates.Add (stateKey, newState);
 		newState.Init (target);
+	}
+	public void RemoveState(StateName stateKey){
+		myStates.Remove (stateKey);
 	}
 
 	public void SetState(StateName stateKey){
