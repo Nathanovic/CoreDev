@@ -2,6 +2,6 @@
 *.collabignore
 *.sln
 
-/Library/*
-/obj/*
-/UnityPackageManager/*
+/CoreDevProject/Library/*
+/CoreDevProject/obj/*
+/CoreDevProject/UnityPackageManager/*
