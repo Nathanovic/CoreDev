@@ -1,5 +1,6 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+<<<<<<< HEAD
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GameManager.cs">
     <Files>
       <File FileName="Assets\Scripts\AI\AI.cs" Line="181" Column="33" />
@@ -9,6 +10,17 @@
       <File FileName="Assets\Scripts\GameManager.cs" Line="54" Column="2" />
       <File FileName="Assets\Scripts\LevelObjects\GoodTrap.cs" Line="15" Column="7" />
       <File FileName="Assets\Scripts\AI\TargetingBehaviour.cs" Line="134" Column="6" />
+=======
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AI\AI.cs">
+    <Files>
+      <File FileName="Assets\Scripts\AI\AI.cs" Line="90" Column="2" />
+      <File FileName="Assets\Scripts\Character.cs" Line="24" Column="28" />
+      <File FileName="Assets\Scripts\Player.cs" Line="11" Column="9" />
+      <File FileName="Assets\Scripts\AI\Ghost.cs" Line="18" Column="2" />
+      <File FileName="Assets\Scripts\LevelObjects\GoodTrap.cs" Line="21" Column="4" />
+      <File FileName="Assets\Scripts\Capture.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Pathfinding\PathRequestManager.cs" Line="20" Column="101" />
+>>>>>>> 8f3c54929e2bd4369d73b3d0a71fb4e2e46ad6ec
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
