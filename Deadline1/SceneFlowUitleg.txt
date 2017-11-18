@@ -1,3 +1,0 @@
-Start -> start spel
-(in spel) Escape -> toggle pause
-(paused) ReturnToMenu -> ga terug naar menu
