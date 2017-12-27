@@ -1,16 +1,9 @@
-﻿<Properties StartupItem="Assembly-CSharp.csproj">
+﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Editor\CharacterCreatorEditor.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Vuforia\Scripts\DefaultSmartTerrainEventHandler.cs">
     <Files>
-      <File FileName="Assets\Scripts\Bridge.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Building.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\House.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Data.cs" Line="1" Column="1" />
-      <File FileName="Assets\Editor\DataPropertyDrawer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Editor\ScriptableWizard.cs" Line="1" Column="1" />
-      <File FileName="Assets\Editor\BridgeInspector.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Rotator.cs" Line="36" Column="91" />
-      <File FileName="Assets\Editor\CharacterCreatorEditor.cs" Line="27" Column="47" />
+      <File FileName="Assets\NodeScene\Editor\NodeEditor.cs" Line="1" Column="1" />
+      <File FileName="Assets\Vuforia\Scripts\DefaultSmartTerrainEventHandler.cs" Line="7" Column="81" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

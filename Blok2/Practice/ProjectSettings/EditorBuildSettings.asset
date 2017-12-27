@@ -4,4 +4,7 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/3dVufoTest/test.unity
+    guid: 4fc0b759ee1ba7b478e32ca9ac2e641c

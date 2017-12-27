@@ -1,9 +1,0 @@
-*.csproj
-*.collabignore
-*.sln
-
-*.txt
-
-CoreDevProject/Library/
-CoreDevProject/obj/ 
-CoreDevProject/UnityPackageManager/
