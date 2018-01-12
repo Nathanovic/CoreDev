@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public abstract class State {
+public abstract class State : ScriptableObject {
 
 	private Condition[] nextStateConditions;
 

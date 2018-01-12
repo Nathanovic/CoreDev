@@ -4,7 +4,7 @@
 //als dit zo is, wordt de volgende state aangeroepen
 //condition checking wordt gedaan mbv observer pattern
 
-public abstract class Condition {
+public abstract class Condition : ScriptableObject {
 
 	private FSM fsm;
 	protected AIEvents eventScript;
@@ -14,10 +14,13 @@ public abstract class Condition {
 	public bool requireTags = false;
 	protected string[] validTags;
 
-	public void Init(FSM fsm, AIEvents eventScript, State nextState){
+	public void InitNextState(State nextState){//called by ConditionNode.cs
+		this.nextState = nextState;
+	}
+
+	public void Init(FSM fsm, AIEvents eventScript){
 		this.fsm = fsm;
 		this.eventScript = eventScript;
-		this.nextState = nextState;
 	}
 
 	public void PassTags(params string[] tags){
