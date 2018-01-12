@@ -5,6 +5,8 @@ using System;
 public abstract class Node : ScriptableObject {
 	//scriptableObject is needed to have functions like OnDestroy; so I dont need it!
 
+	public bool existsInProject = false;
+
 	protected FSMData linkedFSM;
 	protected int linkedModelIndex = -1;
 

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEditor;
 using System;
 using System.Reflection;
+using System.IO;
 
 public class FSMDataHandler : ScriptableObject {
 
+	string fsmEditorNodesPath = "Assets/FSM_EditorNodes/"; 
 	string fsmDataPath = "Assets/FSMData/"; 
 	string[] conditionOptions;
 	string[] stateOptions;
@@ -29,7 +31,6 @@ public class FSMDataHandler : ScriptableObject {
 	}
 
 	public FSMData CreateDefaultFSM(){
-		Debug.Log ("create default data");
 		FSMData newFSM = ScriptableObject.CreateInstance<FSMData>();
 
 		AddNewNode (newFSM, "State", new Vector2(150,150));
@@ -43,14 +44,13 @@ public class FSMDataHandler : ScriptableObject {
 	public void CreateFSMData(ref FSMData fsmSO, bool duplicate){
 		if (fsmSO.unitType != "") {
 			if (duplicate) {
-				Debug.LogWarning ("Duplicate is not yet implemented");
+				Debug.LogWarning ("this feature is not yet implemented");
 				return;
 				FSMData newFSMSO = ScriptableObject.CreateInstance <FSMData> ();
 				newFSMSO.CopyInit (fsmSO);
 				fsmSO = newFSMSO;
 			}
 
-			Debug.Log ("Try creating fsm: " + fsmSO.unitType);
 			string path = fsmDataPath + fsmSO.unitType;
 			ScriptableObjectUtility.CreateAssetFromScript<FSMData> (fsmSO, path);
 		} else {
@@ -71,10 +71,40 @@ public class FSMDataHandler : ScriptableObject {
 		return null;
 	}
 
+	public void LoadFSMData(FSMData fsmSO){
+		int fileIndex = 0;
+		while (true) {
+			string path = EditorNodePathAtIndex (fsmSO, fileIndex);
+			if (File.Exists (path)) {
+				Debug.Log ("loading Node at path: " + path);
+				Node newNode = AssetDatabase.LoadAssetAtPath<Node> (path);
+				fsmSO.editorNodeWindows.Add (newNode);
+
+				fileIndex++;
+			} else {
+				break;
+			}
+		}
+	}
+
+	//wordt aangeroepen als een andere SO wordt geselecteerd of als de editor wordt afgesloten
 	public void SaveChangesToFSMData(FSMData fsmSO){
 		//Undo.RecordObject (fsmSO, "Saved FSMData: " + fsmSO.unitType);
-		fsmSO.RemoveInvalidData();
-		fsmSO.SaveData();
+		if(false){//als dit SO niet opgeslagen is
+			return;
+		}
+
+
+		for (int i = 0; i < fsmSO.editorNodeWindows.Count; i++) {
+			if (!fsmSO.editorNodeWindows [i].existsInProject) {
+				fsmSO.editorNodeWindows [i].existsInProject = true;
+				string path = EditorNodePathAtIndex (fsmSO, i);
+				ScriptableObjectUtility.CreateAssetFromScript<Node> (fsmSO.editorNodeWindows [i], path);
+			}
+		}
+
+		//fsmSO.RemoveInvalidData();
+		//fsmSO.SaveData();
 	}
 
 	public void AddNewNode (FSMData fsmSO, string nodeType, Vector2 mousePos){
@@ -94,6 +124,10 @@ public class FSMDataHandler : ScriptableObject {
 
 		newNode.Init (fsmSO, dropdownOptions, mousePos);
 		fsmSO.AddNodeWindow (newNode);
+	}
+
+	string EditorNodePathAtIndex(FSMData fsmSO, int i){
+		return fsmEditorNodesPath + fsmSO.unitType + "_node_" + i;
 	}
 }
 //Type eventScriptType = eventScript.GetType ();

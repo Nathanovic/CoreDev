@@ -66,9 +66,9 @@ public class ConditionNode : Node {
 	protected override void CreateModelFromIndex(){
 		string conditionTypeName = dropdownOptions [selectedDropdownIndex];
 		Type currentConditionType = Assembly.GetExecutingAssembly ().GetType (conditionTypeName);
-		//conditionModel = Activator.CreateInstance (currentConditionType) as Condition;
-		conditionModel = ScriptableObject.CreateInstance(currentConditionType) as Condition;
-		Undo.RecordObject (conditionModel, "created condition class in Node");
+		conditionModel = Activator.CreateInstance (currentConditionType) as Condition;
+		//conditionModel = ScriptableObject.CreateInstance(currentConditionType) as Condition;
+		//Undo.RecordObject (conditionModel, "created condition class in Node");
 
 		showTagField = conditionModel.requireTags;
 		windowRect.height = 10f;//nodig om de height opnieuw flexibel te berekenen

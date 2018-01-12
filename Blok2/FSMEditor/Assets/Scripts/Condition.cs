@@ -4,7 +4,8 @@
 //als dit zo is, wordt de volgende state aangeroepen
 //condition checking wordt gedaan mbv observer pattern
 
-public abstract class Condition : ScriptableObject {
+[System.Serializable]
+public abstract class Condition {
 
 	private FSM fsm;
 	protected AIEvents eventScript;

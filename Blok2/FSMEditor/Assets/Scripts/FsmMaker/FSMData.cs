@@ -8,7 +8,7 @@ public class FSMData : ScriptableObject {
 	[HideInInspector]public List<Node> editorNodeWindows = new List<Node>(3);
 	public void AddNodeWindow(Node newEditorNodeWindow){
 		Debug.Log (newEditorNodeWindow); 
-		Undo.RecordObject (newEditorNodeWindow, unitType + "_FSMData created editorNodeWindow");
+		//Undo.RegisterCompleteObjectUndo (newEditorNodeWindow, unitType + "_FSMData_node");
 		editorNodeWindows.Add (newEditorNodeWindow);
 	}
 
@@ -26,34 +26,30 @@ public class FSMData : ScriptableObject {
 		states = otherFSM.states;
 	}
 
-	public void SaveData(){//werkt niet! of toch well??!???!
-		for (int i = 0; i < editorNodeWindows.Count; i++) {
-			EditorUtility.SetDirty (editorNodeWindows [i]);
-			Debug.Log ("set node " + i + " to Dirty");
-		}
+	public void ClearScriptableObjects(){
+		editorNodeWindows.Clear ();
 
-		for (int s = 0; s < states.Count; s++) {
-			EditorUtility.SetDirty(states[s]);
-		}
-		for (int s = 0; s < conditions.Count; s++) {
-			EditorUtility.SetDirty(conditions[s]);
-		}
+//		for (int i = 0; i < editorNodeWindows.Count; i++) {
+//			EditorUtility.SetDirty (editorNodeWindows [i]);
+//		}
+//
+//		for (int i = 0; i < states.Count; i++) {
+//			EditorUtility.SetDirty(states[i]);
+//		}
+//		for (int i = 0; i < conditions.Count; i++) {
+//			//EditorUtility.SetDirty(conditions[i]);
+//		}
+//
+//		Undo.FlushUndoRecordObjects ();
 	}
 
 	public void RemoveInvalidData(){
-		Debug.Log ("conditionCount: " + conditions.Count);
-		Debug.Log ("statesCount: " + states.Count);
-
 		for (int i = conditions.Count - 1; i > 0; i--) {
 			if (invalidConditions.Contains (i)) {
 				invalidConditions.Remove (i);
 				conditions.RemoveAt (i);
 
 				Debug.Log ("removing invalid condition " + i); 
-			}
-			else {
-				//Debug.Log ("save condition at " + i);
-				EditorUtility.SetDirty (conditions [i]);
 			}
 		}
 
@@ -63,10 +59,6 @@ public class FSMData : ScriptableObject {
 				states.RemoveAt (i);
 
 				Debug.Log ("removing invalid state " + i); 
-			}
-			else {
-				//Debug.Log ("save state at " + i);
-				EditorUtility.SetDirty (states [i]);
 			}
 		}
 	}

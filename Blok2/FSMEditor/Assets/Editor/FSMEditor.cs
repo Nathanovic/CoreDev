@@ -42,10 +42,13 @@ public class FSMEditor : EditorWindow {
 				dataHandler.SaveChangesToFSMData (currentFSMData);
 			}
 
+			Debug.Log ("Retrieving data from " + otherFSM.unitType + "; nodeWindowCount: " + otherFSM.editorNodeWindows.Count);
 			currentFSMData = otherFSM;
+			dataHandler.LoadFSMData (currentFSMData);
 			fsmExistsInProject = true;
 		}
 		else if (currentFSMData == null) {
+			Debug.Log ("Could not load data, creating default data");
 			currentFSMData = dataHandler.CreateDefaultFSM ();
 			fsmExistsInProject = false;
 		}
