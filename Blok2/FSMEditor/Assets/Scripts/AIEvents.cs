@@ -12,6 +12,8 @@ public class AIEvents : MonoBehaviour {
 	public event DefaultEvent onDie;
 	public event DefaultEvent onTargetDies;
 
+	public event DefaultEvent onStartPatrol;
+
 	void OnCollisionEnter2D(Collision2D coll){
 		if (onCollisionEnter != null)
 			onCollisionEnter (coll.collider);
@@ -31,6 +33,12 @@ public class AIEvents : MonoBehaviour {
 	public void TargetDies(){
 		if (onTargetDies != null) {
 			onTargetDies ();
+		}
+	}
+
+	public void StartPatrolling(){
+		if (onStartPatrol != null) {
+			onStartPatrol ();
 		}
 	}
 }

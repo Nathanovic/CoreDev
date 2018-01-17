@@ -53,6 +53,7 @@ public class AI : MonoBehaviour {
 
 	public void PreparePatrol(){
 		anim.SetFloat ("moveSpeed", 1f);
+		eventScript.StartPatrolling ();
 	}
 	public void Patrol(){
 		Debug.Log ("Patrol");
