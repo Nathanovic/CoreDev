@@ -19,10 +19,14 @@ public class FSMDataHandler : ScriptableObject {
 		Type[] allTypes = Assembly.GetAssembly(typeof(Condition)).GetTypes ();
 		foreach (Type type in allTypes) {
 			if (type.BaseType == typeof(Condition)) {
-				conditions.Add (type.Name);
+				string conditName = type.Name;
+				conditName = conditName.Remove (conditName.Length - 2);
+				conditions.Add (conditName);
 			}
 			else if (type.BaseType == typeof(State)) {
-				states.Add (type.Name);
+				string stateName = type.Name;
+				stateName = stateName.Remove (stateName.Length - 2);
+				states.Add (stateName);
 			}
 		}
 
@@ -33,8 +37,8 @@ public class FSMDataHandler : ScriptableObject {
 	public FSMData CreateDefaultFSM(){
 		FSMData newFSM = ScriptableObject.CreateInstance<FSMData>();
 
-		AddNewNode (newFSM, "State", new Vector2(150,150));
-		AddNewNode (newFSM, "Condition", new Vector2(350,150));
+		//AddNewNode (newFSM, "State", new Vector2(150,150));
+		//AddNewNode (newFSM, "Condition", new Vector2(350,150));
 		//conditionNode.ConnectToState (stateNode);
 
 		newFSM.unitType = "NewFSM";
@@ -51,6 +55,7 @@ public class FSMDataHandler : ScriptableObject {
 				fsmSO = newFSMSO;
 			}
 
+			fsmSO.existsInProject = true;
 			string path = fsmDataPath + fsmSO.unitType;
 			ScriptableObjectUtility.CreateAssetFromScript<FSMData> (fsmSO, path);
 		} else {
@@ -72,9 +77,12 @@ public class FSMDataHandler : ScriptableObject {
 	}
 
 	public void LoadFSMData(FSMData fsmSO){
+
+		Debug.Log ("Retrieving data from " + fsmSO.unitType);
+
 		int fileIndex = 0;
 		while (true) {
-			string path = EditorNodePathAtIndex (fsmSO, fileIndex);
+			string path = EditorNodePathAtIndex (fsmSO, fileIndex) + ".asset";
 			if (File.Exists (path)) {
 				Debug.Log ("loading Node at path: " + path);
 				Node newNode = AssetDatabase.LoadAssetAtPath<Node> (path);
@@ -82,6 +90,7 @@ public class FSMDataHandler : ScriptableObject {
 
 				fileIndex++;
 			} else {
+				Debug.Log ("Could not find Node at path: " + path);
 				break;
 			}
 		}
@@ -89,22 +98,23 @@ public class FSMDataHandler : ScriptableObject {
 
 	//wordt aangeroepen als een andere SO wordt geselecteerd of als de editor wordt afgesloten
 	public void SaveChangesToFSMData(FSMData fsmSO){
-		//Undo.RecordObject (fsmSO, "Saved FSMData: " + fsmSO.unitType);
-		if(false){//als dit SO niet opgeslagen is
+		if(!fsmSO.existsInProject){//als dit SO niet opgeslagen is in het project
 			return;
 		}
+			
+//		for (int i = 0; i < fsmSO.editorNodeWindows.Count; i++) {
+//			if (!fsmSO.editorNodeWindows [i].existsInProject) {
+//				fsmSO.editorNodeWindows [i].existsInProject = true;
+//				string path = EditorNodePathAtIndex (fsmSO, i);
+//				ScriptableObjectUtility.CreateAssetFromScript<Node> (fsmSO.editorNodeWindows [i], path);
+//			}
+//		}
 
-
-		for (int i = 0; i < fsmSO.editorNodeWindows.Count; i++) {
-			if (!fsmSO.editorNodeWindows [i].existsInProject) {
-				fsmSO.editorNodeWindows [i].existsInProject = true;
-				string path = EditorNodePathAtIndex (fsmSO, i);
-				ScriptableObjectUtility.CreateAssetFromScript<Node> (fsmSO.editorNodeWindows [i], path);
-			}
-		}
-
-		//fsmSO.RemoveInvalidData();
-		//fsmSO.SaveData();
+		//fsmSO.ClearScriptableObjects ();
+		bool succes = false;
+		fsmSO.LinkStatesAndConditions(out succes);
+		Debug.Log ("Linked states and conditions succesfully: " + succes);
+		fsmSO.RemoveInvalidData();
 	}
 
 	public void AddNewNode (FSMData fsmSO, string nodeType, Vector2 mousePos){
@@ -125,6 +135,8 @@ public class FSMDataHandler : ScriptableObject {
 		newNode.Init (fsmSO, dropdownOptions, mousePos);
 		fsmSO.AddNodeWindow (newNode);
 	}
+
+	//public void RemoveNode (FSMData fsmSO, 
 
 	string EditorNodePathAtIndex(FSMData fsmSO, int i){
 		return fsmEditorNodesPath + fsmSO.unitType + "_node_" + i;

@@ -86,4 +86,6 @@ public abstract class Node : ScriptableObject {
 		}
 	}
 	protected abstract void OnLinkedNodeDestroyed (Node otherNode);//this can be subscribed to the onNodeDestroyed event
+
+	public abstract void PrepareModel (out bool succes);
 }

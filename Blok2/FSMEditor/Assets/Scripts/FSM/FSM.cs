@@ -20,6 +20,14 @@ public class FSM {
 		newState.OnEnter (targetAI);
 		currentState = newState;
 	}
+	public void UpdateState(State newState, GameObject otherObject){
+		if (currentState != null) {
+			currentState.OnExit (targetAI);
+		}
+
+		newState.OnEnter (targetAI, otherObject);
+		currentState = newState;
+	}
 
 	public void Run(){
 		currentState.Run (targetAI);

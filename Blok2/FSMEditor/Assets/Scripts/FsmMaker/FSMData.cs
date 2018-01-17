@@ -5,11 +5,12 @@ using UnityEditor;
 
 public class FSMData : ScriptableObject {
 
-	[HideInInspector]public List<Node> editorNodeWindows = new List<Node>(3);
+	[HideInInspector]public bool existsInProject = false;
+	public List<Node> editorNodeWindows = new List<Node>(3);
 	public void AddNodeWindow(Node newEditorNodeWindow){
-		Debug.Log (newEditorNodeWindow); 
 		//Undo.RegisterCompleteObjectUndo (newEditorNodeWindow, unitType + "_FSMData_node");
 		editorNodeWindows.Add (newEditorNodeWindow);
+		AssetDatabase.AddObjectToAsset (newEditorNodeWindow, this);
 	}
 
 	public string unitType;
@@ -27,6 +28,7 @@ public class FSMData : ScriptableObject {
 	}
 
 	public void ClearScriptableObjects(){
+		Debug.Log ("clearing data for: " + unitType);
 		editorNodeWindows.Clear ();
 
 //		for (int i = 0; i < editorNodeWindows.Count; i++) {
@@ -41,6 +43,17 @@ public class FSMData : ScriptableObject {
 //		}
 //
 //		Undo.FlushUndoRecordObjects ();
+	}
+
+	public void LinkStatesAndConditions(out bool succes){
+		succes = true;
+		for (int i = 0; i < editorNodeWindows.Count; i++) {
+			bool nodeLinkedSuccesfully = false;
+			editorNodeWindows [i].PrepareModel (out nodeLinkedSuccesfully);
+			if (!nodeLinkedSuccesfully) {
+				succes = false;
+			}
+		}
 	}
 
 	public void RemoveInvalidData(){

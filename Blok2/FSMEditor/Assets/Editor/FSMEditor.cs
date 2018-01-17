@@ -23,7 +23,11 @@ public class FSMEditor : EditorWindow {
 		}
 	}
 
-	bool fsmExistsInProject = false;
+	bool fsmExistsInProject{
+		get{ 
+			return currentFSMData.existsInProject;
+		}
+	}
 
 	[MenuItem("Window/FSMEditor")]
 	static void Init(){
@@ -42,15 +46,12 @@ public class FSMEditor : EditorWindow {
 				dataHandler.SaveChangesToFSMData (currentFSMData);
 			}
 
-			Debug.Log ("Retrieving data from " + otherFSM.unitType + "; nodeWindowCount: " + otherFSM.editorNodeWindows.Count);
+			dataHandler.LoadFSMData (otherFSM);
 			currentFSMData = otherFSM;
-			dataHandler.LoadFSMData (currentFSMData);
-			fsmExistsInProject = true;
 		}
 		else if (currentFSMData == null) {
 			Debug.Log ("Could not load data, creating default data");
 			currentFSMData = dataHandler.CreateDefaultFSM ();
-			fsmExistsInProject = false;
 		}
 		else {
 			return;
@@ -69,11 +70,16 @@ public class FSMEditor : EditorWindow {
 	}
 
 	void DrawMainSection(){
-		GUILayout.BeginHorizontal (GUILayout.MaxWidth (200));
-		GUILayout.Label ("Unit type: ", EditorStyles.boldLabel);
-		GUILayout.Space (30);
-		unitType = GUILayout.TextField (unitType, 15, GUILayout.Width(100));
-		GUILayout.EndHorizontal ();		
+		if (!fsmExistsInProject) {
+			GUILayout.BeginHorizontal (GUILayout.MaxWidth (200));
+			GUILayout.Label ("Unit type: ", EditorStyles.boldLabel);
+			GUILayout.Space (30);
+			unitType = GUILayout.TextField (unitType, 15, GUILayout.Width (100));
+			GUILayout.EndHorizontal ();		
+		}
+		else {
+			GUILayout.Label (unitType, EditorStyles.boldLabel);
+		}
 	}
 
 	void DrawGUIButtons(){
@@ -84,7 +90,6 @@ public class FSMEditor : EditorWindow {
 		string createFSMText = fsmExistsInProject ? "Duplicate" : "Create";
 		if (GUILayout.Button (createFSMText, GUILayout.Width (135))) {
 			dataHandler.CreateFSMData (ref currentFSMData, fsmExistsInProject);
-			fsmExistsInProject = true;
 		}
 	}
 

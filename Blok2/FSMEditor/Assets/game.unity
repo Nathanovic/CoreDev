@@ -592,7 +592,7 @@ Prefab:
         type: 2}
       propertyPath: fsmMaker
       value: 
-      objectReference: {fileID: 11400000, guid: 0d04b218567f85b4fabdd081352a7031,
+      objectReference: {fileID: 11400000, guid: 86992299d6e5909478a513c4e8b1c71b,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 320e2c0dc10fb604bbe04efd877c5ada, type: 2}

@@ -50,21 +50,28 @@ public class StateNode : Node {
 
 	#region DataHandling
 	protected override void CreateModelFromIndex () {
-		string stateTypeName = dropdownOptions [selectedDropdownIndex];
+		string stateTypeName = dropdownOptions [selectedDropdownIndex] + "_S";
 		Type currentState = Assembly.GetExecutingAssembly ().GetType (stateTypeName);
 		//stateModel = Activator.CreateInstance (currentState) as State;
 		stateModel = ScriptableObject.CreateInstance(currentState) as State;
-		Undo.RecordObject (stateModel, "created state class in Node");
+		AssetDatabase.AddObjectToAsset (stateModel, linkedFSM);
+		//Undo.RecordObject (stateModel, "created state class in Node");
 	}
 
 	public override void ConnectToNode (Node otherNode) {
+		bool QQQSucces = false;
+
 		if (otherNode.GetType () == typeof(ConditionNode)) {
 			ConditionNode fromStateCondition = (ConditionNode)otherNode;
 			if (!fromStateConditionNodes.Contains (fromStateCondition)) {
 				LinkMeToOtherNode (otherNode);//used when the other node is destroyed
 				fromStateConditionNodes.Add (fromStateCondition);
+
+				QQQSucces = true;
 			}
 		}
+
+		Debug.Log ("connection: " + QQQSucces);
 	}
 
 	public override void DestroyNode(){
@@ -78,13 +85,20 @@ public class StateNode : Node {
 	}
 	#endregion
 
-	public State GetStateFromNode (){
+	public override void PrepareModel(out bool succes) {
 		List<Condition> fromStateConditions = new List<Condition> (fromStateConditionNodes.Count);
-		for (int i = 0; i < fromStateConditions.Count; i++) {
+		for (int i = 0; i < fromStateConditionNodes.Count; i++) {
 			fromStateConditions.Add (fromStateConditionNodes[i].conditionModel);
 		}
 
+		if (fromStateConditions.Count == 0) {
+			Debug.Log (stateModel + " won't work since there is no condition from this state");
+			succes = false;
+		}
+		else {
+			succes = true;
+		}
+
 		stateModel.InitConditions (fromStateConditions.ToArray());
-		return stateModel;
 	}
 }

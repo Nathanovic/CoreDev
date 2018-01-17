@@ -64,10 +64,11 @@ public class ConditionNode : Node {
 
 	#region DataHandling
 	protected override void CreateModelFromIndex(){
-		string conditionTypeName = dropdownOptions [selectedDropdownIndex];
+		string conditionTypeName = dropdownOptions [selectedDropdownIndex] + "_C";
 		Type currentConditionType = Assembly.GetExecutingAssembly ().GetType (conditionTypeName);
-		conditionModel = Activator.CreateInstance (currentConditionType) as Condition;
-		//conditionModel = ScriptableObject.CreateInstance(currentConditionType) as Condition;
+		conditionModel = ScriptableObject.CreateInstance(currentConditionType) as Condition;
+
+		AssetDatabase.AddObjectToAsset (conditionModel, linkedFSM);
 		//Undo.RecordObject (conditionModel, "created condition class in Node");
 
 		showTagField = conditionModel.requireTags;
@@ -97,16 +98,18 @@ public class ConditionNode : Node {
 	}
 	#endregion
 
-	public Condition GetConditionFromNode(){//used when data should be saved (from FSMData)
+	public override void PrepareModel(out bool succes) {//used when data should be saved (from FSMData)
 		if (conditionModel.requireTags) {
 			conditionModel.PassTags (objectTag);
 		}
+
 		if (nextStateNode == null) {
 			Debug.LogWarning ("this FSM will not work correctly since one ore more conditions are not linked to a state");
+			succes = false;
 		}
 		else {
 			conditionModel.InitNextState (nextStateNode.stateModel);
+			succes = true;
 		}
-		return conditionModel;
 	}
 }
