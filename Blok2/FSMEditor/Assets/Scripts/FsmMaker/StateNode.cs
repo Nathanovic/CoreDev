@@ -8,7 +8,7 @@ public class StateNode : Node {
 
 	private string stateName;
 
-	public State stateModel { 
+	public State StateModel { 
 		get { 
 			return linkedFSM.states [linkedModelIndex];
 		}
@@ -25,10 +25,9 @@ public class StateNode : Node {
 
 	public List<ConditionNode> fromStateConditionNodes;
 
-	public StateNode(){
+	public void InitStateNode(bool entryState){
 		windowRect = new Rect (50, 150, 300, 50);
-		windowTitle = "state node";
-		windowType = "state";
+		windowTitle = entryState ? "Entry state" : "State";
 		dropdownDescription = "State: ";
 		fromStateConditionNodes = new List<ConditionNode> (3);
 	}
@@ -53,8 +52,8 @@ public class StateNode : Node {
 		string stateTypeName = dropdownOptions [selectedDropdownIndex] + "_S";
 		Type currentState = Assembly.GetExecutingAssembly ().GetType (stateTypeName);
 		//stateModel = Activator.CreateInstance (currentState) as State;
-		stateModel = ScriptableObject.CreateInstance(currentState) as State;
-		AssetDatabase.AddObjectToAsset (stateModel, linkedFSM);
+		StateModel = ScriptableObject.CreateInstance(currentState) as State;
+		AssetDatabase.AddObjectToAsset (StateModel, linkedFSM);
 		//Undo.RecordObject (stateModel, "created state class in Node");
 	}
 
@@ -88,17 +87,10 @@ public class StateNode : Node {
 	public override void PrepareModel(out bool succes) {
 		List<Condition> fromStateConditions = new List<Condition> (fromStateConditionNodes.Count);
 		for (int i = 0; i < fromStateConditionNodes.Count; i++) {
-			fromStateConditions.Add (fromStateConditionNodes[i].conditionModel);
+			fromStateConditions.Add (fromStateConditionNodes[i].ConditionModel);
 		}
+		StateModel.InitConditions (fromStateConditions.ToArray());
 
-		if (fromStateConditions.Count == 0) {
-			Debug.Log (stateModel + " won't work since there is no condition from this state");
-			succes = false;
-		}
-		else {
-			succes = true;
-		}
-
-		stateModel.InitConditions (fromStateConditions.ToArray());
+		succes = true;
 	}
 }

@@ -8,7 +8,6 @@ public class FSMData : ScriptableObject {
 	[HideInInspector]public bool existsInProject = false;
 	public List<Node> editorNodeWindows = new List<Node>(3);
 	public void AddNodeWindow(Node newEditorNodeWindow){
-		//Undo.RegisterCompleteObjectUndo (newEditorNodeWindow, unitType + "_FSMData_node");
 		editorNodeWindows.Add (newEditorNodeWindow);
 		AssetDatabase.AddObjectToAsset (newEditorNodeWindow, this);
 	}
@@ -27,28 +26,10 @@ public class FSMData : ScriptableObject {
 		states = otherFSM.states;
 	}
 
-	public void ClearScriptableObjects(){
-		Debug.Log ("clearing data for: " + unitType);
-		editorNodeWindows.Clear ();
-
-//		for (int i = 0; i < editorNodeWindows.Count; i++) {
-//			EditorUtility.SetDirty (editorNodeWindows [i]);
-//		}
-//
-//		for (int i = 0; i < states.Count; i++) {
-//			EditorUtility.SetDirty(states[i]);
-//		}
-//		for (int i = 0; i < conditions.Count; i++) {
-//			//EditorUtility.SetDirty(conditions[i]);
-//		}
-//
-//		Undo.FlushUndoRecordObjects ();
-	}
-
 	public void LinkStatesAndConditions(out bool succes){
 		succes = true;
 		for (int i = 0; i < editorNodeWindows.Count; i++) {
-			bool nodeLinkedSuccesfully = false;
+			bool nodeLinkedSuccesfully = true;
 			editorNodeWindows [i].PrepareModel (out nodeLinkedSuccesfully);
 			if (!nodeLinkedSuccesfully) {
 				succes = false;
@@ -56,6 +37,7 @@ public class FSMData : ScriptableObject {
 		}
 	}
 
+	//remove the nodes that the user deleted:
 	public void RemoveInvalidData(){
 		for (int i = conditions.Count - 1; i > 0; i--) {
 			if (invalidConditions.Contains (i)) {

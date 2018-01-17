@@ -11,6 +11,7 @@ public class FSMDataHandler : ScriptableObject {
 	string fsmDataPath = "Assets/FSMData/"; 
 	string[] conditionOptions;
 	string[] stateOptions;
+	private bool createdEntryState;
 
 	public void LoadOptionsFromAssembly(){
 		List<string> conditions = new List<string> ();
@@ -34,22 +35,26 @@ public class FSMDataHandler : ScriptableObject {
 		stateOptions = states.ToArray ();
 	}
 
-	public FSMData CreateDefaultFSM(){
+	public FSMData CreateEmptyFSM(){
 		FSMData newFSM = ScriptableObject.CreateInstance<FSMData>();
-
-		//AddNewNode (newFSM, "State", new Vector2(150,150));
-		//AddNewNode (newFSM, "Condition", new Vector2(350,150));
-		//conditionNode.ConnectToState (stateNode);
-
 		newFSM.unitType = "NewFSM";
 		return newFSM;
+	}
+
+	public void ResetFSM(ref FSMData fsmSO){
+		createdEntryState = false;
+		fsmSO.editorNodeWindows.Clear ();
+		fsmSO.invalidConditions.Clear ();
+		fsmSO.invalidStates.Clear ();
+		fsmSO.conditions.Clear ();
+		fsmSO.states.Clear ();
 	}
 
 	public void CreateFSMData(ref FSMData fsmSO, bool duplicate){
 		if (fsmSO.unitType != "") {
 			if (duplicate) {
 				Debug.LogWarning ("this feature is not yet implemented");
-				return;
+				//return;
 				FSMData newFSMSO = ScriptableObject.CreateInstance <FSMData> ();
 				newFSMSO.CopyInit (fsmSO);
 				fsmSO = newFSMSO;
@@ -76,44 +81,18 @@ public class FSMDataHandler : ScriptableObject {
 		return null;
 	}
 
-	public void LoadFSMData(FSMData fsmSO){
-
-		Debug.Log ("Retrieving data from " + fsmSO.unitType);
-
-		int fileIndex = 0;
-		while (true) {
-			string path = EditorNodePathAtIndex (fsmSO, fileIndex) + ".asset";
-			if (File.Exists (path)) {
-				Debug.Log ("loading Node at path: " + path);
-				Node newNode = AssetDatabase.LoadAssetAtPath<Node> (path);
-				fsmSO.editorNodeWindows.Add (newNode);
-
-				fileIndex++;
-			} else {
-				Debug.Log ("Could not find Node at path: " + path);
-				break;
-			}
-		}
-	}
-
 	//wordt aangeroepen als een andere SO wordt geselecteerd of als de editor wordt afgesloten
 	public void SaveChangesToFSMData(FSMData fsmSO){
 		if(!fsmSO.existsInProject){//als dit SO niet opgeslagen is in het project
 			return;
 		}
 			
-//		for (int i = 0; i < fsmSO.editorNodeWindows.Count; i++) {
-//			if (!fsmSO.editorNodeWindows [i].existsInProject) {
-//				fsmSO.editorNodeWindows [i].existsInProject = true;
-//				string path = EditorNodePathAtIndex (fsmSO, i);
-//				ScriptableObjectUtility.CreateAssetFromScript<Node> (fsmSO.editorNodeWindows [i], path);
-//			}
-//		}
-
-		//fsmSO.ClearScriptableObjects ();
 		bool succes = false;
 		fsmSO.LinkStatesAndConditions(out succes);
-		Debug.Log ("Linked states and conditions succesfully: " + succes);
+		if (!succes) {
+			Debug.LogWarning ("The '" + fsmSO.unitType + "'-FSM will probably not work, since one or more conditions are not connected to a state");
+		}
+
 		fsmSO.RemoveInvalidData();
 	}
 
@@ -122,12 +101,19 @@ public class FSMDataHandler : ScriptableObject {
 		string[] dropdownOptions = null;
 
 		if (nodeType == "Condition") {
-			newNode = ScriptableObject.CreateInstance<ConditionNode> ();
+			ConditionNode conditNode = ScriptableObject.CreateInstance<ConditionNode> ();
+			conditNode.InitConditionNode ();
+
 			dropdownOptions = conditionOptions;
+			newNode = conditNode;
 		}
 		else if (nodeType == "State") {
-			newNode = ScriptableObject.CreateInstance<StateNode> ();
+			StateNode stateNode = ScriptableObject.CreateInstance<StateNode> ();
+			stateNode.InitStateNode (!createdEntryState);
+			createdEntryState = true;
+
 			dropdownOptions = stateOptions;
+			newNode = stateNode;
 		}
 		else
 			Debug.LogWarning ("cant create " + nodeType + " because it is unknown");
@@ -136,16 +122,7 @@ public class FSMDataHandler : ScriptableObject {
 		fsmSO.AddNodeWindow (newNode);
 	}
 
-	//public void RemoveNode (FSMData fsmSO, 
-
 	string EditorNodePathAtIndex(FSMData fsmSO, int i){
 		return fsmEditorNodesPath + fsmSO.unitType + "_node_" + i;
 	}
 }
-//Type eventScriptType = eventScript.GetType ();
-//EventInfo[] eventInfo = eventScriptType.GetEvents (BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
-//int eventCount = eventInfo.Length;
-//string[] options = new string[eventCount];
-//for(int i = 0; i < eventCount; i ++){
-//	options [i] = eventInfo [i].Name;
-//}

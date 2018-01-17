@@ -13,7 +13,8 @@ public abstract class Condition : ScriptableObject {
 	private State nextState;
 
 	public bool requireTags = false;
-	protected string[] validTags;
+	[SerializeField]protected string[] validTags;
+	public ConditionType type;
 
 	public void InitNextState(State nextState){//called by ConditionNode.cs
 		this.nextState = nextState;
@@ -40,4 +41,10 @@ public abstract class Condition : ScriptableObject {
 	protected void TriggerCondition(GameObject otherObject){
 		fsm.UpdateState (nextState, otherObject);
 	}
+}
+
+public enum ConditionType{
+	standard,
+	passGameObject,
+	requireGameObject
 }

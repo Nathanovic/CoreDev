@@ -6,12 +6,11 @@ using System.Collections.Generic;
 
 public class ConditionNode : Node {
 
-	private string objectTag;
-	private TrueFalseCondition trueFalse;//kan de voorwaarde inverten
+	[SerializeField]private string objectTag;
+	[SerializeField]private TrueFalseCondition trueFalse;//kan de voorwaarde inverten
 
-	private StateNode nextStateNode;
-
-	public Condition conditionModel { 
+	[SerializeField]private StateNode nextStateNode;
+	[SerializeField]public Condition ConditionModel { 
 		get {
 			return linkedFSM.conditions[linkedModelIndex];
 		}
@@ -26,12 +25,10 @@ public class ConditionNode : Node {
 		}
 	}
 
-	private bool showTagField;
+	[SerializeField]private bool showTagField;
 
-	public ConditionNode(){
+	public void InitConditionNode(){
 		windowRect = new Rect(300,150,300,10);
-		windowTitle = "condition node";
-		windowType = "object condition";
 		objectTag = "Player";
 		trueFalse = TrueFalseCondition.True;
 		dropdownDescription = "Action: ";
@@ -66,12 +63,13 @@ public class ConditionNode : Node {
 	protected override void CreateModelFromIndex(){
 		string conditionTypeName = dropdownOptions [selectedDropdownIndex] + "_C";
 		Type currentConditionType = Assembly.GetExecutingAssembly ().GetType (conditionTypeName);
-		conditionModel = ScriptableObject.CreateInstance(currentConditionType) as Condition;
+		ConditionModel = ScriptableObject.CreateInstance(currentConditionType) as Condition;
+		windowTitle = "Condition (" + ConditionModel.type.ToString() + ")";
 
-		AssetDatabase.AddObjectToAsset (conditionModel, linkedFSM);
+		AssetDatabase.AddObjectToAsset (ConditionModel, linkedFSM);
 		//Undo.RecordObject (conditionModel, "created condition class in Node");
 
-		showTagField = conditionModel.requireTags;
+		showTagField = ConditionModel.requireTags;
 		windowRect.height = 10f;//nodig om de height opnieuw flexibel te berekenen
 	}
 
@@ -93,22 +91,21 @@ public class ConditionNode : Node {
 	}
 
 	protected override void OnLinkedNodeDestroyed (Node otherNode) {
-		conditionModel.InitNextState (null);
+		ConditionModel.InitNextState (null);
 		nextStateNode = null;
 	}
 	#endregion
 
 	public override void PrepareModel(out bool succes) {//used when data should be saved (from FSMData)
-		if (conditionModel.requireTags) {
-			conditionModel.PassTags (objectTag);
+		if (ConditionModel.requireTags) {
+			ConditionModel.PassTags (objectTag);
 		}
 
 		if (nextStateNode == null) {
-			Debug.LogWarning ("this FSM will not work correctly since one ore more conditions are not linked to a state");
 			succes = false;
 		}
 		else {
-			conditionModel.InitNextState (nextStateNode.stateModel);
+			ConditionModel.InitNextState (nextStateNode.StateModel);
 			succes = true;
 		}
 	}

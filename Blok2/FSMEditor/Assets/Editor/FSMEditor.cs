@@ -4,17 +4,15 @@ using UnityEditor;
 
 public class FSMEditor : EditorWindow {
 
-	//public GUISkin customGUISkin;
-	public Texture arrow;
-	FSMDataHandler dataHandler;
-	FSMData currentFSMData;
+	private FSMDataHandler dataHandler;
+	private FSMData currentFSMData;
 
-	List<Node> nodeWindows{
+	private List<Node> nodeWindows{
 		get{
 			return currentFSMData.editorNodeWindows;
 		}
 	}
-	string unitType{
+	private string unitType{
 		get{
 			return currentFSMData.unitType;
 		}
@@ -23,11 +21,16 @@ public class FSMEditor : EditorWindow {
 		}
 	}
 
-	bool fsmExistsInProject{
+	private bool fsmExistsInProject{
 		get{ 
 			return currentFSMData.existsInProject;
 		}
 	}
+
+	private Node transitionStartNode;
+	private Vector2 inputMousePos;
+
+	private Vector2 relationArrowSize = new Vector2 (10, 15);
 
 	[MenuItem("Window/FSMEditor")]
 	static void Init(){
@@ -46,12 +49,11 @@ public class FSMEditor : EditorWindow {
 				dataHandler.SaveChangesToFSMData (currentFSMData);
 			}
 
-			dataHandler.LoadFSMData (otherFSM);
 			currentFSMData = otherFSM;
 		}
 		else if (currentFSMData == null) {
 			Debug.Log ("Could not load data, creating default data");
-			currentFSMData = dataHandler.CreateDefaultFSM ();
+			currentFSMData = dataHandler.CreateEmptyFSM ();
 		}
 		else {
 			return;
@@ -83,13 +85,15 @@ public class FSMEditor : EditorWindow {
 	}
 
 	void DrawGUIButtons(){
-		if(GUILayout.Button("Reset nodes", GUILayout.Width(135))){
-			currentFSMData = dataHandler.CreateDefaultFSM ();
-		}
-
-		string createFSMText = fsmExistsInProject ? "Duplicate" : "Create";
-		if (GUILayout.Button (createFSMText, GUILayout.Width (135))) {
-			dataHandler.CreateFSMData (ref currentFSMData, fsmExistsInProject);
+		if (!fsmExistsInProject) {
+			if (GUILayout.Button ("Create", GUILayout.Width (135))) {
+				dataHandler.CreateFSMData (ref currentFSMData, fsmExistsInProject);
+			}
+		} 
+		else {
+			if (GUILayout.Button ("Reset FSM", GUILayout.Width (135))) {
+				dataHandler.ResetFSM (ref currentFSMData);
+			}
 		}
 	}
 
@@ -97,14 +101,16 @@ public class FSMEditor : EditorWindow {
 		BeginWindows ();//all windows must appear here:
 		for (int i = 0; i < nodeWindows.Count; i++) {
 			nodeWindows [i].DrawWindow (i);
-			nodeWindows [i].DrawRelationArrows (DrawArrow);
+			nodeWindows [i].DrawRelationArrows (DrawRelationArrow);
 		}
 		EndWindows ();		
 	}
 
-	private Node transitionStartNode;
-	private Vector2 inputMousePos;
 	void EvaluateInput(){
+		if (!fsmExistsInProject) {
+			return;
+		}
+
 		Event e = Event.current;
 		if (transitionStartNode == null) {
 			if (e.button == 1 && e.type == EventType.mouseDown) {
@@ -128,7 +134,7 @@ public class FSMEditor : EditorWindow {
 		}
 		else {
 			inputMousePos = e.mousePosition;
-			DrawArrow (inputMousePos, transitionStartNode.nodeConnectionPoint (inputMousePos));
+			DrawRelationArrow (inputMousePos, transitionStartNode.nodeConnectionPoint (inputMousePos));
 			if (e.button == 0 && e.type == EventType.mouseUp) {
 				int selectIndex = MouseOverWindow ();
 				MakeTransition (selectIndex);
@@ -170,28 +176,20 @@ public class FSMEditor : EditorWindow {
 		EvaluateSelection ();		
 	}
 
-	void DrawArrow(Vector3 startPos, Vector3 endPos){
-		Handles.color = Color.white;
+	void DrawRelationArrow(Vector3 startPos, Vector3 endPos){
+		Handles.color = Color.black;
 		Handles.DrawLine (startPos, endPos);
 
 		float avgX = (startPos.x + endPos.x) / 2f;
 		float avgY = (startPos.y + endPos.y) / 2f;
-		Vector2 avgPos = new Vector2 (avgX, avgY);
-		Vector2 arrowSize = new Vector2 (50, 50);
+		Vector3 avgPos = new Vector3 (avgX, avgY, 0);
+		Vector3 arrowDir = (endPos - startPos).normalized;
+		Vector3 perpendicDirection = Vector3.Cross (arrowDir, Vector3.forward).normalized;
 
-		Vector2 dirToEnd = (endPos - startPos).normalized;
-		Vector2 arrowPos = (Vector2)startPos + dirToEnd;
-		Quaternion arrowRot = Quaternion.LookRotation (endPos - startPos);
-
-		Handles.ArrowHandleCap(//ugly
-			0,
-			arrowPos,
-			arrowRot,
-			100f,
-			EventType.Repaint
-		);
-
-		//Rect arrowRect = new Rect (avgPos, arrowSize);
-		//GUI.DrawTexture (arrowRect, arrow);
+		Vector3 arrowPoint = avgPos + arrowDir * relationArrowSize.y;
+		Vector3 arrowTailL = avgPos + perpendicDirection * relationArrowSize.x;
+		Vector3 arrowTailR = avgPos + perpendicDirection * -relationArrowSize.x;
+		Handles.DrawLine (arrowTailL, arrowPoint);
+		Handles.DrawLine (arrowTailR, arrowPoint);
 	}
 }

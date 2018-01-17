@@ -3,22 +3,20 @@ using UnityEditor;
 using System;
 
 public abstract class Node : ScriptableObject {
-	//scriptableObject is needed to have functions like OnDestroy; so I dont need it!
 
 	public bool existsInProject = false;
 
-	protected FSMData linkedFSM;
-	protected int linkedModelIndex = -1;
+	[SerializeField]protected FSMData linkedFSM;
+	[SerializeField]protected int linkedModelIndex = -1;
 
 	public Rect windowRect;
-	protected string windowTitle;
-	protected string windowType;
+	[SerializeField]protected string windowTitle;
 	protected const int MAX_STRING_LENGTH = 15;
 
-	protected string dropdownDescription;
-	protected string[] dropdownOptions;//de verschillende mogelijke voorwaarden 
-	private int previousDropdownIndex;
-	protected int selectedDropdownIndex;//de index van de geselecteerde voorwaarde/state
+	[SerializeField]protected string dropdownDescription;
+	[SerializeField]protected string[] dropdownOptions;//de verschillende mogelijke voorwaarden 
+	[SerializeField]private int previousDropdownIndex;
+	[SerializeField]protected int selectedDropdownIndex;//de index van de geselecteerde voorwaarde/state
 
 	public delegate void OnNodeDestroyed(Node thisNode);
 	public event OnNodeDestroyed onNodeDestroyed;
@@ -49,11 +47,6 @@ public abstract class Node : ScriptableObject {
 	}
 
 	protected virtual void DoMyWindow(int windowID){
-		GUILayout.BeginHorizontal ();
-		GUILayout.FlexibleSpace ();
-		GUILayout.Box (windowType);
-		GUILayout.FlexibleSpace ();
-		GUILayout.EndHorizontal ();
 		GUI.DragWindow ();
 	}
 

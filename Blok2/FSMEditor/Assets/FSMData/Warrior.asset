@@ -1,0 +1,331 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bcc7ee5be1bac143ba3e4d46839fe34, type: 3}
+  m_Name: Warrior
+  m_EditorClassIdentifier: 
+  existsInProject: 1
+  editorNodeWindows:
+  - {fileID: 114578353636819166}
+  - {fileID: 114597447417183746}
+  - {fileID: 114187073181000494}
+  - {fileID: 114694485587314704}
+  - {fileID: 114241840531543326}
+  - {fileID: 114552323316619972}
+  unitType: Warrior
+  conditions:
+  - {fileID: 114332494740388818}
+  - {fileID: 114634140861498372}
+  - {fileID: 114106193987418044}
+  invalidConditions: 
+  states:
+  - {fileID: 114546940111517794}
+  - {fileID: 114453753727945534}
+  - {fileID: 114650465851899338}
+  invalidStates: 
+--- !u!114 &114106193987418044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf17d2efd54172345ba6f3e729af5e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requireTags: 1
+  validTags:
+  - Box
+  type: 1
+--- !u!114 &114158334159565568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 613643d924c246247a25437046cae151, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114187073181000494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f670fc509ab98ee4ea3baae1dc696783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  existsInProject: 0
+  linkedFSM: {fileID: 11400000}
+  linkedModelIndex: 1
+  windowRect:
+    serializedVersion: 2
+    x: 716
+    y: 204
+    width: 300
+    height: 50
+  windowTitle: state
+  dropdownDescription: 'State: '
+  dropdownOptions:
+  - Attack
+  - Idle
+  - Patrol
+  previousDropdownIndex: 0
+  selectedDropdownIndex: 0
+  fromStateConditionNodes:
+  - {fileID: 114694485587314704}
+--- !u!114 &114241840531543326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1b154d4167c2446a51c7253711f743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  existsInProject: 0
+  linkedFSM: {fileID: 11400000}
+  linkedModelIndex: 2
+  windowRect:
+    serializedVersion: 2
+    x: 40
+    y: 429
+    width: 300
+    height: 77
+  windowTitle: passGameObject condition
+  dropdownDescription: 'Action: '
+  dropdownOptions:
+  - Collide
+  - Die
+  - TargetDies
+  previousDropdownIndex: 0
+  selectedDropdownIndex: 0
+  objectTag: Box
+  trueFalse: 0
+  nextStateNode: {fileID: 114552323316619972}
+  showTagField: 1
+--- !u!114 &114332494740388818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf17d2efd54172345ba6f3e729af5e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requireTags: 1
+  validTags:
+  - Player
+  type: 1
+--- !u!114 &114382209234532308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf17d2efd54172345ba6f3e729af5e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requireTags: 1
+  validTags: []
+  type: 1
+--- !u!114 &114453753727945534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 613643d924c246247a25437046cae151, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114546940111517794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27bebaf51443514bb2d94d9979a0aa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114552323316619972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f670fc509ab98ee4ea3baae1dc696783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  existsInProject: 0
+  linkedFSM: {fileID: 11400000}
+  linkedModelIndex: 2
+  windowRect:
+    serializedVersion: 2
+    x: 448
+    y: 461
+    width: 300
+    height: 50
+  windowTitle: entry state
+  dropdownDescription: 'State: '
+  dropdownOptions:
+  - Attack
+  - Idle
+  - Patrol
+  previousDropdownIndex: 1
+  selectedDropdownIndex: 1
+  fromStateConditionNodes: []
+--- !u!114 &114578353636819166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f670fc509ab98ee4ea3baae1dc696783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  existsInProject: 0
+  linkedFSM: {fileID: 11400000}
+  linkedModelIndex: 0
+  windowRect:
+    serializedVersion: 2
+    x: -23
+    y: 187
+    width: 300
+    height: 50
+  windowTitle: entry state
+  dropdownDescription: 'State: '
+  dropdownOptions:
+  - Attack
+  - Idle
+  - Patrol
+  previousDropdownIndex: 2
+  selectedDropdownIndex: 2
+  fromStateConditionNodes:
+  - {fileID: 114597447417183746}
+  - {fileID: 114241840531543326}
+--- !u!114 &114597447417183746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1b154d4167c2446a51c7253711f743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  existsInProject: 0
+  linkedFSM: {fileID: 11400000}
+  linkedModelIndex: 0
+  windowRect:
+    serializedVersion: 2
+    x: 351
+    y: 80
+    width: 300
+    height: 77
+  windowTitle: passGameObject condition
+  dropdownDescription: 'Action: '
+  dropdownOptions:
+  - Collide
+  - Die
+  - TargetDies
+  previousDropdownIndex: 0
+  selectedDropdownIndex: 0
+  objectTag: Player
+  trueFalse: 0
+  nextStateNode: {fileID: 114187073181000494}
+  showTagField: 1
+--- !u!114 &114634140861498372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6825630e78fc0784081a40ca7704a581, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requireTags: 0
+  validTags: []
+  type: 2
+--- !u!114 &114650465851899338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb0837e5563ded94da9812fdc9c2587f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114694485587314704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1b154d4167c2446a51c7253711f743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  existsInProject: 0
+  linkedFSM: {fileID: 11400000}
+  linkedModelIndex: 1
+  windowRect:
+    serializedVersion: 2
+    x: 314
+    y: 315
+    width: 300
+    height: 59
+  windowTitle: requireGameObject condition
+  dropdownDescription: 'Action: '
+  dropdownOptions:
+  - Collide
+  - Die
+  - TargetDies
+  previousDropdownIndex: 2
+  selectedDropdownIndex: 2
+  objectTag: Player
+  trueFalse: 0
+  nextStateNode: {fileID: 114578353636819166}
+  showTagField: 0
+--- !u!114 &114886678858736330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 613643d924c246247a25437046cae151, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

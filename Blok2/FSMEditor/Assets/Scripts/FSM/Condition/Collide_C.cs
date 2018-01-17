@@ -5,6 +5,7 @@ public class Collide_C : Condition{
 
 	public Collide_C(){
 		requireTags = true;
+		type = ConditionType.passGameObject;
 	}
 
 	public override void Activate(){

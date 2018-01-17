@@ -1,11 +1,12 @@
 fileFormatVersion: 2
 guid: eab8e5704f467d94c9fd51495491cfef
-timeCreated: 1512394665
+timeCreated: 1516187251
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: default
     21300002: slash
+    21300004: Soldier_0
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -97,7 +98,7 @@ TextureImporter:
         width: 45
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -111,7 +112,21 @@ TextureImporter:
         width: 68
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Soldier_0
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 0
+        width: 61
+        height: 64
+      alignment: 9
+      pivot: {x: 0.3388104, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
