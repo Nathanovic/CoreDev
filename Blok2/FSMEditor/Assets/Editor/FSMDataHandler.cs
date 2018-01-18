@@ -86,12 +86,6 @@ public class FSMDataHandler : ScriptableObject {
 		if(!fsmSO.existsInProject){//als dit SO niet opgeslagen is in het project
 			return;
 		}
-			
-		bool succes = false;
-		fsmSO.LinkStatesAndConditions(out succes);
-		if (!succes) {
-			Debug.LogWarning ("The '" + fsmSO.unitType + "'-FSM will probably not work, since one or more conditions are not connected to a state");
-		}
 
 		fsmSO.RemoveInvalidData();
 	}

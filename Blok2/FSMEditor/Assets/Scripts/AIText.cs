@@ -10,7 +10,7 @@ public class AIText : MonoBehaviour {
 	private AIEvents eventScript;
 	public float yOffset = 0.8f;
 
-	void Start () {
+	void Awake () {
 		myText = GetComponent<Text> ();
 		eventScript = target.GetComponent<AIEvents> ();
 		eventScript.onTargetDies += KilledEnemyFeedback;

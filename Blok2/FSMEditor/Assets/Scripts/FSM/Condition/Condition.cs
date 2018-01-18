@@ -10,29 +10,23 @@ public abstract class Condition : ScriptableObject {
 	private FSM fsm;
 	protected AIEvents eventScript;
 
-	private State nextState;
+	[SerializeField]private State nextState;
 
-	public bool requireTags = false;
+	[SerializeField]public ConditionType type{ get; protected set; }//used by ConditionNode
+	[SerializeField]public bool requireTags{ get; protected set; }//used by ConditionNode
 	[SerializeField]protected string[] validTags;
-	public ConditionType type;
 
-	public void InitNextState(State nextState){//called by ConditionNode.cs
+	public void PrepareCondition(State nextState, params string[] tags){//called by ConditionNode.cs
 		this.nextState = nextState;
+		validTags = tags;
 	}
 
-	public void Init(FSM fsm, AIEvents eventScript){
+	public void Init(FSM fsm, AIEvents eventScript){//called before an AI starts using his FSM
 		this.fsm = fsm;
 		this.eventScript = eventScript;
 	}
 
-	public void PassTags(params string[] tags){
-		validTags = tags;
-	}
-
 	public abstract void Activate ();
-	public virtual void Activate(GameObject otherObject){//can be used if the condition depends on this otherObject
-		Activate ();
-	}
 	public abstract void Deactivate ();
 
 	protected void TriggerCondition(){

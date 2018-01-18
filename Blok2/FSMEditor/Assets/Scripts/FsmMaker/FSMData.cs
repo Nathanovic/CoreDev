@@ -19,6 +19,7 @@ public class FSMData : ScriptableObject {
 	public List<State> states = new List<State> ();
 	public List<int> invalidStates = new List<int> ();//states die geremoved zijn
 
+	//not yet implemented:
 	public void CopyInit(FSMData otherFSM){
 		editorNodeWindows = otherFSM.editorNodeWindows;
 		unitType = otherFSM.unitType;
@@ -26,14 +27,18 @@ public class FSMData : ScriptableObject {
 		states = otherFSM.states;
 	}
 
-	public void LinkStatesAndConditions(out bool succes){
-		succes = true;
+	public void LinkStatesAndConditions(){
+		bool succes = true;
 		for (int i = 0; i < editorNodeWindows.Count; i++) {
 			bool nodeLinkedSuccesfully = true;
 			editorNodeWindows [i].PrepareModel (out nodeLinkedSuccesfully);
 			if (!nodeLinkedSuccesfully) {
 				succes = false;
 			}
+		}
+
+		if (!succes) {
+			Debug.LogWarning ("The '" + unitType + "'-FSM will probably not work, since one or more conditions are not linked to a state");
 		}
 	}
 

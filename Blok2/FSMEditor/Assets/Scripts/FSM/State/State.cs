@@ -3,9 +3,9 @@
 [System.Serializable]
 public abstract class State : ScriptableObject {
 
-	private Condition[] nextStateConditions;
+	[SerializeField]private Condition[] nextStateConditions;
 
-	public void InitConditions(params Condition[] conditions){
+	public void InitConditions(Condition[] conditions){//called by StateNode
 		nextStateConditions = conditions;
 	}
 
@@ -14,11 +14,7 @@ public abstract class State : ScriptableObject {
 			condition.Activate ();
 		}
 	}
-	public virtual void OnEnter (AI target, GameObject otherObject){
-		foreach (Condition condition in nextStateConditions) {
-			condition.Activate (otherObject);
-		}
-	}
+	public virtual void OnEnter (AI target, GameObject otherObject){}
 	public abstract void Run (AI target);
 	public virtual void OnExit (AI target){
 		foreach (Condition condition in nextStateConditions) {

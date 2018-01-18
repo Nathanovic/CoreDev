@@ -707,7 +707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 14
-  health: 8
+  health: 4
   healthText: {fileID: 339964799}
   healthYOffset: 0.72
 --- !u!50 &1071018122

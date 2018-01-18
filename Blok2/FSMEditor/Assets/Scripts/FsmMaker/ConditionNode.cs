@@ -91,21 +91,17 @@ public class ConditionNode : Node {
 	}
 
 	protected override void OnLinkedNodeDestroyed (Node otherNode) {
-		ConditionModel.InitNextState (null);
+		ConditionModel.PrepareCondition (null);
 		nextStateNode = null;
 	}
 	#endregion
 
 	public override void PrepareModel(out bool succes) {//used when data should be saved (from FSMData)
-		if (ConditionModel.requireTags) {
-			ConditionModel.PassTags (objectTag);
-		}
-
 		if (nextStateNode == null) {
 			succes = false;
 		}
 		else {
-			ConditionModel.InitNextState (nextStateNode.StateModel);
+			ConditionModel.PrepareCondition (nextStateNode.StateModel, objectTag);
 			succes = true;
 		}
 	}

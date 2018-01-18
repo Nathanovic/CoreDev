@@ -5,7 +5,7 @@ public class Attack_S : State{
 	IDamageable damageableTarget;
 
 	public override void OnEnter (AI target, UnityEngine.GameObject otherObject) {
-		base.OnEnter (target, otherObject);
+		base.OnEnter (target);
 		damageableTarget = otherObject.GetComponent<IDamageable> ();
 		target.PrepareAttack (damageableTarget);
 	}

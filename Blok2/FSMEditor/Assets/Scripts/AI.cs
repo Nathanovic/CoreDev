@@ -30,7 +30,12 @@ public class AI : MonoBehaviour {
 	}
 
 	void InitFSM(){
+		if (fsmMaker == null) {
+			Debug.LogWarning ("Please assign a FSMData asset to " + transform.name);
+		}
+
 		fsm = new FSM (this);
+		fsmMaker.LinkStatesAndConditions ();
 		eventScript = GetComponent<AIEvents> ();
 
 		foreach (Condition condition in fsmMaker.conditions) {
