@@ -11,7 +11,6 @@ public class FSMDataHandler : ScriptableObject {
 	string fsmDataPath = "Assets/FSMData/"; 
 	string[] conditionOptions;
 	string[] stateOptions;
-	private bool createdEntryState;
 
 	public void LoadOptionsFromAssembly(){
 		List<string> conditions = new List<string> ();
@@ -42,7 +41,6 @@ public class FSMDataHandler : ScriptableObject {
 	}
 
 	public void ResetFSM(ref FSMData fsmSO){
-		createdEntryState = false;
 		fsmSO.editorNodeWindows.Clear ();
 		fsmSO.invalidConditions.Clear ();
 		fsmSO.invalidStates.Clear ();
@@ -102,6 +100,10 @@ public class FSMDataHandler : ScriptableObject {
 			newNode = conditNode;
 		}
 		else if (nodeType == "State") {
+			bool createdEntryState = false;
+			if (fsmSO.states.Count - fsmSO.invalidStates.Count == 0) {
+				createdEntryState = true;
+			}
 			StateNode stateNode = ScriptableObject.CreateInstance<StateNode> ();
 			stateNode.InitStateNode (!createdEntryState);
 			createdEntryState = true;

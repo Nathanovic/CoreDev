@@ -30,6 +30,10 @@ public abstract class Node : ScriptableObject {
 		CreateModelFromIndex ();
 	}
 
+	public void UpdateModelIndex(){
+		linkedModelIndex--;
+	}
+
 	protected void DoMyDropdown(){
 		selectedDropdownIndex = EditorGUILayout.Popup (dropdownDescription, selectedDropdownIndex, dropdownOptions);
 		EvaluateDropdownIndex ();
