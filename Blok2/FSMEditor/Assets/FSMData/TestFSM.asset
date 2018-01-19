@@ -1,0 +1,178 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bcc7ee5be1bac143ba3e4d46839fe34, type: 3}
+  m_Name: TestFSM
+  m_EditorClassIdentifier: 
+  existsInProject: 1
+  editorNodeWindows:
+  - {fileID: 114622511752878134}
+  - {fileID: 114475171342050618}
+  - {fileID: 114845199608321090}
+  unitType: TestFSM
+  conditions:
+  - {fileID: 114901300629625070}
+  invalidConditions: 
+  states:
+  - {fileID: 114911671064001412}
+  - {fileID: 114720345415837350}
+  invalidStates: 
+--- !u!114 &114475171342050618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f670fc509ab98ee4ea3baae1dc696783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  existsInProject: 0
+  linkedFSM: {fileID: 11400000}
+  linkedModelIndex: 0
+  windowRect:
+    serializedVersion: 2
+    x: 46
+    y: 265
+    width: 300
+    height: 50
+  windowTitle: State
+  dropdownDescription: 'State: '
+  dropdownOptions:
+  - Attack
+  - Idle
+  - Patrol
+  previousDropdownIndex: 2
+  selectedDropdownIndex: 2
+  fromStateConditionNodes:
+  - {fileID: 114622511752878134}
+--- !u!114 &114622511752878134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1b154d4167c2446a51c7253711f743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  existsInProject: 0
+  linkedFSM: {fileID: 11400000}
+  linkedModelIndex: 0
+  windowRect:
+    serializedVersion: 2
+    x: 307
+    y: 150
+    width: 300
+    height: 77
+  windowTitle: Condition (passGameObject)
+  dropdownDescription: 'Action: '
+  dropdownOptions:
+  - Collide
+  - Die
+  - TargetDies
+  previousDropdownIndex: 0
+  selectedDropdownIndex: 0
+  objectTag: Box
+  trueFalse: 0
+  nextStateNode: {fileID: 114845199608321090}
+  showTagField: 1
+--- !u!114 &114697894106147536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 613643d924c246247a25437046cae151, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextStateConditions: []
+--- !u!114 &114720345415837350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb0837e5563ded94da9812fdc9c2587f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextStateConditions: []
+--- !u!114 &114845199608321090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f670fc509ab98ee4ea3baae1dc696783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  existsInProject: 0
+  linkedFSM: {fileID: 11400000}
+  linkedModelIndex: 1
+  windowRect:
+    serializedVersion: 2
+    x: 562
+    y: 265
+    width: 300
+    height: 50
+  windowTitle: Entry state
+  dropdownDescription: 'State: '
+  dropdownOptions:
+  - Attack
+  - Idle
+  - Patrol
+  previousDropdownIndex: 1
+  selectedDropdownIndex: 1
+  fromStateConditionNodes: []
+--- !u!114 &114901300629625070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf17d2efd54172345ba6f3e729af5e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextState: {fileID: 0}
+  validTags: []
+--- !u!114 &114911671064001412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27bebaf51443514bb2d94d9979a0aa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextStateConditions: []
+--- !u!114 &114926832795405518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 613643d924c246247a25437046cae151, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextStateConditions: []

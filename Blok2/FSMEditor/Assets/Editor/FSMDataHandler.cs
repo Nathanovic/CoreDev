@@ -5,7 +5,7 @@ using System;
 using System.Reflection;
 using System.IO;
 
-public class FSMDataHandler : ScriptableObject {
+public class FSMDataHandler {
 
 	string fsmEditorNodesPath = "Assets/FSM_EditorNodes/"; 
 	string fsmDataPath = "Assets/FSMData/"; 
@@ -48,7 +48,7 @@ public class FSMDataHandler : ScriptableObject {
 		fsmSO.states.Clear ();
 	}
 
-	public void CreateFSMData(ref FSMData fsmSO, bool duplicate){
+	public void FSMDataToProject(ref FSMData fsmSO, bool duplicate){
 		if (fsmSO.unitType != "") {
 			if (duplicate) {
 				Debug.LogWarning ("this feature is not yet implemented");
@@ -116,9 +116,5 @@ public class FSMDataHandler : ScriptableObject {
 
 		newNode.Init (fsmSO, dropdownOptions, mousePos);
 		fsmSO.AddNodeWindow (newNode);
-	}
-
-	string EditorNodePathAtIndex(FSMData fsmSO, int i){
-		return fsmEditorNodesPath + fsmSO.unitType + "_node_" + i;
 	}
 }

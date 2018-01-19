@@ -33,16 +33,16 @@ public class FSMEditor : EditorWindow {
 	private Vector2 relationArrowSize = new Vector2 (10, 15);
 
 	[MenuItem("Window/FSMEditor")]
-	static void Init(){
+	private static void Init(){
 		FSMEditor editorWindow = (FSMEditor)EditorWindow.GetWindow<FSMEditor> ();
 		editorWindow.Show ();
 
-		editorWindow.dataHandler = ScriptableObject.CreateInstance<FSMDataHandler> ();
+		editorWindow.dataHandler = new FSMDataHandler ();
 		editorWindow.dataHandler.LoadOptionsFromAssembly ();
 		editorWindow.EvaluateSelection ();
 	}
 	 
-	void EvaluateSelection(){
+	private void EvaluateSelection(){
 		FSMData otherFSM = dataHandler.GetOtherSelectedDataobject();//pak het geselecteerde scriptableobject where T : FSMData
 		if (otherFSM != null && otherFSM != currentFSMData) {
 			if(currentFSMData != null){//first save changes, is eigenlijk niet nodig omdat als er iets veranderd, dit automatisch in de SO wordt opgeslagen
@@ -60,18 +60,18 @@ public class FSMEditor : EditorWindow {
 		}
 	}
 	
-	void OnGUI(){
+	private void OnGUI(){
 		DrawMainSection ();
 		DrawGUIButtons ();
 		EvaluateInput ();
 		DrawNodeWindows ();
 	}
 
-	void OnDisable(){
+	private void OnDisable(){
 		dataHandler.SaveChangesToFSMData (currentFSMData);
 	}
 
-	void DrawMainSection(){
+	private void DrawMainSection(){
 		if (!fsmExistsInProject) {
 			GUILayout.BeginHorizontal (GUILayout.MaxWidth (200));
 			GUILayout.Label ("Unit type: ", EditorStyles.boldLabel);
@@ -84,10 +84,10 @@ public class FSMEditor : EditorWindow {
 		}
 	}
 
-	void DrawGUIButtons(){
+	private void DrawGUIButtons(){
 		if (!fsmExistsInProject) {
 			if (GUILayout.Button ("Create", GUILayout.Width (135))) {
-				dataHandler.CreateFSMData (ref currentFSMData, fsmExistsInProject);
+				dataHandler.FSMDataToProject (ref currentFSMData, fsmExistsInProject);
 			}
 		} 
 		else {
@@ -97,7 +97,7 @@ public class FSMEditor : EditorWindow {
 		}
 	}
 
-	void DrawNodeWindows(){
+	private void DrawNodeWindows(){
 		BeginWindows ();//all windows must appear here:
 		for (int i = 0; i < nodeWindows.Count; i++) {
 			nodeWindows [i].DrawWindow (i);
@@ -106,7 +106,7 @@ public class FSMEditor : EditorWindow {
 		EndWindows ();		
 	}
 
-	void EvaluateInput(){
+	private void EvaluateInput(){
 		if (!fsmExistsInProject) {
 			return;
 		}
@@ -142,7 +142,7 @@ public class FSMEditor : EditorWindow {
 		}
 	}
 
-	int MouseOverWindow(){
+	private int MouseOverWindow(){
 		for (int i = 0; i < nodeWindows.Count; i++) {
 			if (nodeWindows [i].windowRect.Contains (inputMousePos)) {
 				return i;
@@ -152,31 +152,31 @@ public class FSMEditor : EditorWindow {
 		return -1;
 	}
 
-	void OnNodeSelected (object nodeType){
+	private void OnNodeSelected (object nodeType){
 		dataHandler.AddNewNode (currentFSMData, nodeType.ToString(), inputMousePos);
 	}
 
-	void EnableTransitionMode(object fromNodeIndex){
+	private void EnableTransitionMode(object fromNodeIndex){
 		transitionStartNode = nodeWindows [(int)fromNodeIndex];
 	}
-	void MakeTransition(int nodeIndex){
+	private void MakeTransition(int nodeIndex){
 		if (nodeIndex != -1) {
 			transitionStartNode.ConnectToNode (nodeWindows [nodeIndex]);
 			transitionStartNode = null;
 		}
 	}
 
-	void RemoveNode(object nodeIndex){
+	private void RemoveNode(object nodeIndex){
 		int nIndex = (int)nodeIndex;
 		nodeWindows [nIndex].DestroyNode();
 		nodeWindows.RemoveAt (nIndex);
 	}
 
-	void OnSelectionChange(){
+	private void OnSelectionChange(){
 		EvaluateSelection ();		
 	}
 
-	void DrawRelationArrow(Vector3 startPos, Vector3 endPos){
+	private void DrawRelationArrow(Vector3 startPos, Vector3 endPos){
 		Handles.color = Color.black;
 		Handles.DrawLine (startPos, endPos);
 
