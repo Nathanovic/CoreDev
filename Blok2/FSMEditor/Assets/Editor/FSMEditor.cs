@@ -113,7 +113,7 @@ public class FSMEditor : EditorWindow {
 
 		Event e = Event.current;
 		if (transitionStartNode == null) {
-			if (e.button == 1 && e.type == EventType.mouseDown) {
+			if (e.button == 1 && e.type == EventType.MouseDown) {
 				inputMousePos = e.mousePosition;
 				int selectIndex = MouseOverWindow ();
 
@@ -135,7 +135,7 @@ public class FSMEditor : EditorWindow {
 		else {
 			inputMousePos = e.mousePosition;
 			DrawRelationArrow (inputMousePos, transitionStartNode.nodeConnectionPoint (inputMousePos));
-			if (e.button == 0 && e.type == EventType.mouseUp) {
+			if (e.button == 0 && e.type == EventType.MouseUp) {
 				int selectIndex = MouseOverWindow ();
 				MakeTransition (selectIndex);
 			}
