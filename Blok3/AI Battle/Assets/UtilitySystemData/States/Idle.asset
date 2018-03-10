@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Name: Idle
   m_EditorClassIdentifier: Assembly-CSharp:AI_UtilitySystem:Idle
   decisionFactors:
-  - {fileID: 11400000, guid: dfa39bf9aa6ad0946b08cfe1891238a6, type: 2}
+  - {fileID: 11400000, guid: c2bbb7d8ba873e349833faf16cf7a6ff, type: 2}
   utility: 1
   cooldownTime: 0.5
-  minIdleDuration: 0
-  maxIdleDuration: 1.2
+  minIdleDuration: 0.3
+  maxIdleDuration: 1.5

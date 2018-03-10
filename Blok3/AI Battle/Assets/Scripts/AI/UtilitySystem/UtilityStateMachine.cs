@@ -10,16 +10,26 @@ namespace AI_UtilitySystem{
 		private AIStats statsModel;
 		private AIBase controller;
 		public List<State> allStates;
+
+		public State[] states;
+		public DecisionFactor decFactor;
+
 		public State currentState;
 
 		void Start(){
 			statsModel = GetComponent<AIStats> ();
 			controller = GetComponent<AIBase> ();
+
+			List<State> copyStatesList = new List<State> (allStates.Count);
 			foreach (State s in allStates) {
-				s.Init (this, controller, statsModel);
+				State copyInstance = s.GetCopy ();
+				copyInstance.Init (this, controller, statsModel);
+				copyStatesList.Add (copyInstance);
 			}
 
-			allStates.Sort ();//pretty useless
+			allStates = copyStatesList;
+
+			//allStates.Sort ();//pretty useless
 
 			TriggerNextState ();
 		}

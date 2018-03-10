@@ -7,7 +7,11 @@ namespace AI_UtilitySystem{
 	[System.Serializable]
 	public class AIStats : MonoBehaviour{
 
-		public Vector2 position{ get; set;}
+		private Vector2 position{
+			get{ 
+				return new Vector2 (transform.position.x, transform.position.y);
+			}
+		}
 		public Vector2 forward{ get; set;}
 
 		public int maxHealth = 10;
@@ -17,14 +21,18 @@ namespace AI_UtilitySystem{
 
 		public IAttackable target;
 
+		private LayerMask obstacleLM;
+		public float stopForObstacleDist = 0.1f;
+
 		public delegate void TriggerOtherDelegate (Collider2D other);
 		public event TriggerOtherDelegate onTriggerOther;
 
 		void Start(){
+			obstacleLM = LayerMask.GetMask ("Default", "Ground", "Obstacle");
+
 			health = maxHealth;
 			energy = maxEnergy;
 
-			position = new Vector2 (transform.position.x, transform.position.y);
 			forward = new Vector2 (1, 0);
 		}
 
@@ -33,6 +41,18 @@ namespace AI_UtilitySystem{
 				return Mathf.Infinity;
 			else
 				return Vector3.Distance (transform.position, target.Position());
+		}
+			
+		public bool ObjectAhead(){
+			return ObjectAhead (obstacleLM, stopForObstacleDist);
+		}
+
+		public bool ObjectAhead(LayerMask objectLM, float distance){
+			Debug.DrawRay (position, forward.normalized * distance, Color.red);
+			if (Physics2D.Raycast (position, forward, distance, objectLM)) {
+				return true;
+			}
+			return false;
 		}
 
 		public float GetStatValue(Stat s){

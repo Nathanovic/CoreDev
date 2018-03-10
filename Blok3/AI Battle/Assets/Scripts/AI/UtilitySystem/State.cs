@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using System;
 using System.Collections;
 
 namespace AI_UtilitySystem{ 
 
-	public abstract class State : ScriptableObject, IComparable<State> {
+	public class State : ScriptableObject {
 
 		protected AIBase controller;
 		protected AIStats statsModel;
@@ -33,7 +34,7 @@ namespace AI_UtilitySystem{
 			isActive = true;
 		}
 
-		public abstract void Run ();
+		public virtual void Run (){}
 
 		protected virtual void EndState(){
 			run = false;	
@@ -65,103 +66,39 @@ namespace AI_UtilitySystem{
 			utilityValue *= OveralUtilityFactor();
 		}
 			
-		public int CompareTo (State other) {
+		/*
+		public int CompareTo (State other) {//quite useless
 			int otherUtility = (int)other.utility;
 			int myUtility = (int)utility;
 
-			if (otherUtility == myUtility)
+			if (otherUtility == myUtility) 
 				return 0;
 
 			return (otherUtility > myUtility) ? 1 : -1;
 		}
+		*/
 
 		public float OveralUtilityFactor(){
 			return (float)utility / 3f;
 		}
 		#endregion
+
+		public virtual State GetCopy (){
+			Debug.LogWarning ("not-inherited-warning");
+			return null;
+		}
+
+		protected void SetCopyBase<T>(ref T copyInstance, string instanceName) where T : State{
+			copyInstance.name = instanceName;
+			copyInstance.decisionFactors = decisionFactors;
+			copyInstance.utility = utility;
+			copyInstance.cooldownTime = cooldownTime;
+		}
 	}
 		
 	public enum Utility{
 		low = 1,
 		average = 2,
 		high = 3
-	}
-
-	[CreateAssetMenu(fileName = "Idle", menuName = "Utility System/State: Idle", order = 1)]
-	public class Idle : State{
-
-		[Header("Idle for a random period between:")]
-		public float minIdleDuration;
-		public float maxIdleDuration;
-		private float idleDuration;
-		private float passedIdleTime;
-
-		public override void EnterState () {
-			idleDuration = UnityEngine.Random.Range (minIdleDuration, maxIdleDuration);
-			base.EnterState ();
-		}
-
-		public override void Run () {
-			passedIdleTime += Time.deltaTime;
-			if (passedIdleTime > idleDuration) {
-				EndState ();
-				return;
-			}
-		}
-	}
-
-	[CreateAssetMenu(fileName = "Charge Forward", menuName = "Utility System/State: Charge fwd", order = 1)]
-	public class Charge : State{
-
-		[Header("Charge forward:")]
-		public int chargeDamage = 1;
-
-		public LayerMask obstacleLM;
-		public float stopForObstacleDist = 0.5f;
-
-		public float maxChargeDist = 10f;
-		private float passedChargeDist = 0f;
-		public float chargeSpeed = 5f;
-
-		public override void EnterState () {
-			passedChargeDist = 0f;
-			statsModel.onTriggerOther += TriggerOther;
-			if (RaycastObstacle ()) {
-				statsModel.forward *= -1;
-			}
-
-			base.EnterState ();
-		}
-
-		public override void Run () {
-			if (RaycastObstacle()) {
-				EndState ();
-				return;
-			}
-
-			//charge forward:
-			controller.MoveForward(chargeSpeed);
-			passedChargeDist += chargeSpeed * Time.deltaTime;
-		}
-
-		private bool RaycastObstacle(){
-			if (Physics2D.Raycast (statsModel.position, statsModel.forward, stopForObstacleDist)) {
-				return true;
-			}
-			return false;
-		}
-
-		private void TriggerOther(Collider2D other){
-			IAttackable target = other.GetComponent<IAttackable> ();
-			if (target == statsModel.target) {
-				target.ApplyDamage (chargeDamage);
-				EndState ();
-			}
-		}
-
-		protected override void EndState () {
-			statsModel.onTriggerOther -= TriggerOther;
-			base.EndState ();
-		}
 	}
 }

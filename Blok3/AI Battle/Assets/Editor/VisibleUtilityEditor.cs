@@ -37,9 +37,11 @@ public class VisibleUtilityEditor : Editor {
 
 			Texture2D stateTexture = state.isActive ? activeStateImg : defaultStateImg;
 			GUI.skin.box.normal.background = stateTexture; 
+			GUI.skin.box.clipping = TextClipping.Overflow;
+			GUI.skin.box.wordWrap = false;
 			GUILayout.BeginHorizontal ();
 			GUILayout.Box(((int)state.utility).ToString() + "|" + state.name, GUILayout.Height(stateSize.y), GUILayout.Width(100));
-			GUILayout.Box(stateTexture, GUILayout.Height(stateSize.y), GUILayout.Width(stateSize.x * state.utilityValue));
+			GUILayout.Box(state.utilityValue.ToString(), GUILayout.Height(stateSize.y), GUILayout.Width(stateSize.x * state.utilityValue));
 			GUILayout.EndHorizontal ();
 		}
 

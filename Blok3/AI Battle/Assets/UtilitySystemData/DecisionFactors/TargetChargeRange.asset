@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a585b81395656f4ca92f131377a7c42, type: 3}
+  m_Name: TargetChargeRange
+  m_EditorClassIdentifier: 
+  stat: 0
+  factorSolver: 2
+  minStatValue: 0
+  maxStatValue: 7
+  statCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: -0.0057644844
+      inSlope: 0.18170811
+      outSlope: 0.18170811
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.37027782
+      value: 0.9434419
+      inSlope: 0.6099926
+      outSlope: 0.6099926
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.751449
+      value: 0.87862504
+      inSlope: -1.2355856
+      outSlope: -1.2355856
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1.000222
+      value: -0.000077762175
+      inSlope: -3.0756958
+      outSlope: -3.0756958
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0

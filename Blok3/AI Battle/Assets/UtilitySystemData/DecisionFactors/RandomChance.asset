@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a585b81395656f4ca92f131377a7c42, type: 3}
-  m_Name: RandomCharge
+  m_Name: RandomChance
   m_EditorClassIdentifier: 
   stat: 0
   factorSolver: 3
