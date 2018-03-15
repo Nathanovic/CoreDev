@@ -35,13 +35,15 @@ public class VisibleUtilityEditor : Editor {
 			if (state == null)
 				continue;
 
+			string roundedUtilityValue = state.utilityValue.ToString ("F3");
 			Texture2D stateTexture = state.isActive ? activeStateImg : defaultStateImg;
 			GUI.skin.box.normal.background = stateTexture; 
 			GUI.skin.box.clipping = TextClipping.Overflow;
 			GUI.skin.box.wordWrap = false;
+
 			GUILayout.BeginHorizontal ();
 			GUILayout.Box(((int)state.utility).ToString() + "|" + state.name, GUILayout.Height(stateSize.y), GUILayout.Width(100));
-			GUILayout.Box(state.utilityValue.ToString(), GUILayout.Height(stateSize.y), GUILayout.Width(stateSize.x * state.utilityValue));
+			GUILayout.Box(roundedUtilityValue, GUILayout.Height(stateSize.y), GUILayout.Width(stateSize.x * state.utilityValue));
 			GUILayout.EndHorizontal ();
 		}
 

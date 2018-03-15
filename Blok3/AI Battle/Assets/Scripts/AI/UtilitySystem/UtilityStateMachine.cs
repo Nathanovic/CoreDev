@@ -29,8 +29,6 @@ namespace AI_UtilitySystem{
 
 			allStates = copyStatesList;
 
-			//allStates.Sort ();//pretty useless
-
 			TriggerNextState ();
 		}
 
@@ -49,7 +47,6 @@ namespace AI_UtilitySystem{
 				}
 			}
 
-			Debug.Log ("transition to: " + highestUtilityState.name);
 			currentState = highestUtilityState;
 			currentState.EnterState ();
 		}

@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 
 namespace AI_UtilitySystem{ 
-
+	//this State is the base for all states ran by the UtilityStateMachine
 	public class State : ScriptableObject {
 
 		protected AIBase controller;
@@ -50,44 +50,32 @@ namespace AI_UtilitySystem{
 
 		#region utility behaviour:
 		public void CalculateUtility(){
-			utilityValue = 0f;
 			if (decisionFactors.Length > 0) {
 				utilityValue = decisionFactors [0].Value (statsModel);
 
 				for (int i = 1; i < decisionFactors.Length; i++) {
 					utilityValue *= decisionFactors [i].Value (statsModel);
 				}
+
+				utilityValue *= OveralUtilityFactor ();
 			}
-
-			if(utilityValue == 0f) {
-				utilityValue = 0.001f;
+			else {
+				utilityValue = 0f;
 			}
-
-			utilityValue *= OveralUtilityFactor();
 		}
-			
-		/*
-		public int CompareTo (State other) {//quite useless
-			int otherUtility = (int)other.utility;
-			int myUtility = (int)utility;
-
-			if (otherUtility == myUtility) 
-				return 0;
-
-			return (otherUtility > myUtility) ? 1 : -1;
-		}
-		*/
 
 		public float OveralUtilityFactor(){
 			return (float)utility / 3f;
 		}
 		#endregion
 
+		//a copy of the actual State is required to prevent multiple agents from using and changing the same variables
 		public virtual State GetCopy (){
 			Debug.LogWarning ("not-inherited-warning");
 			return null;
 		}
 
+		//can be used to set the base-variables for the copy
 		protected void SetCopyBase<T>(ref T copyInstance, string instanceName) where T : State{
 			copyInstance.name = instanceName;
 			copyInstance.decisionFactors = decisionFactors;

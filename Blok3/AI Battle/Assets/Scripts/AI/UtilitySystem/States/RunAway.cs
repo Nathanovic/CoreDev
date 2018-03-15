@@ -24,7 +24,7 @@ namespace AI_UtilitySystem{
 		}
 
 		public override void Run () {
-			if (passedDistance > runAwayDist || statsModel.ObjectAhead()) {
+			if (passedDistance > runAwayDist || statsModel.ObstacleAhead()) {
 				EndState ();
 				return;
 			}

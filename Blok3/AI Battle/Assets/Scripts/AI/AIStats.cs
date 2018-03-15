@@ -12,7 +12,7 @@ namespace AI_UtilitySystem{
 				return new Vector2 (transform.position.x, transform.position.y);
 			}
 		}
-		public Vector2 forward{ get; set;}
+		public Vector2 forward;
 
 		public int maxHealth = 10;
 		public int health = 10;
@@ -24,10 +24,9 @@ namespace AI_UtilitySystem{
 		private LayerMask obstacleLM;
 		public float stopForObstacleDist = 0.1f;
 
-		public delegate void TriggerOtherDelegate (Collider2D other);
-		public event TriggerOtherDelegate onTriggerOther;
+		public float weaponRange = 1.2f;
 
-		void Start(){
+		private void Start(){
 			obstacleLM = LayerMask.GetMask ("Default", "Ground", "Obstacle");
 
 			health = maxHealth;
@@ -36,23 +35,39 @@ namespace AI_UtilitySystem{
 			forward = new Vector2 (1, 0);
 		}
 
-		public float DistToTarget(){
+		private float DistToTarget(){
 			if (target == null)
 				return Mathf.Infinity;
 			else
 				return Vector3.Distance (transform.position, target.Position());
 		}
 			
-		public bool ObjectAhead(){
-			return ObjectAhead (obstacleLM, stopForObstacleDist);
+		public bool ObstacleAhead(){
+			return ObstacleAhead (obstacleLM, stopForObstacleDist);
 		}
 
-		public bool ObjectAhead(LayerMask objectLM, float distance){
-			Debug.DrawRay (position, forward.normalized * distance, Color.red);
+		public bool ObstacleAhead(LayerMask objectLM, float distance){
+			Debug.DrawRay (position, forward * distance, Color.red);
 			if (Physics2D.Raycast (position, forward, distance, objectLM)) {
 				return true;
 			}
 			return false;
+		}
+
+		//used to determine whether we are stuck or not
+		private float FarthestObjectDist(){
+			float farthestDist = 30f;
+			RaycastHit2D hitRight = Physics2D.Raycast (position, Vector2.right, 30f);
+			RaycastHit2D hitLeft = Physics2D.Raycast (position, -Vector2.right, 30f);
+
+			if (hitRight.collider != null) {
+				farthestDist = hitRight.distance;	
+			}
+			if (hitLeft.collider != null) {
+				farthestDist = Mathf.Max (farthestDist, hitLeft.distance);
+			}
+
+			return farthestDist;
 		}
 
 		public float GetStatValue(Stat s){
@@ -63,15 +78,11 @@ namespace AI_UtilitySystem{
 				return energy;
 			case Stat.Health:
 				return health;
+			case Stat.FarthestObjectDist:
+				return FarthestObjectDist ();
 			default:
 				Debug.LogWarning ("Unknown stat: " + s.ToString ());
 				return 0f;
-			}
-		}
-
-		private void OnTriggerEnter2D(Collider2D other){
-			if (onTriggerOther != null) {
-				onTriggerOther (other);
 			}
 		}
 	}
@@ -79,6 +90,7 @@ namespace AI_UtilitySystem{
 	public enum Stat{
 		DistToTarget,
 		Health,
-		Energy
+		Energy,
+		FarthestObjectDist
 	}
 }

@@ -20,4 +20,8 @@ public class CombatManager : MonoBehaviour {
 	public void RegisterPotentialTarget(IAttackable t){
 		potentialTargets.Add (t);
 	}
+
+	public void PotentialTargetDied(IAttackable t){
+		potentialTargets.Remove (t);
+	}
 }

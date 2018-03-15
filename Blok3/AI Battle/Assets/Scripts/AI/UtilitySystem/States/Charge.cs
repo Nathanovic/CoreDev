@@ -11,43 +11,54 @@ namespace AI_UtilitySystem{
 		public float maxChargeDist = 10f;
 		public float chargeSpeed = 5f;
 
+		public LayerMask targetLM;
+
 		private float passedChargeDist;
 
 		public override void EnterState () {
-			passedChargeDist = 0f;
-			statsModel.onTriggerOther += TriggerOther;
-			if (statsModel.ObjectAhead ()) {
-				statsModel.forward *= -1;
-			}
-
 			base.EnterState ();
+			passedChargeDist = 0f;
 			controller.SetAnimBool (chargeAnimName, true);
 			controller.TryFacingDanger ();
 		}
 
 		public override void Run () {
-			if (statsModel.ObjectAhead ()) {
+			//check for obstacles:
+			if (statsModel.ObstacleAhead ()) {
 				EndState ();
 				return;
 			}
+
+			//check if we can hit a target:
+			Debug.DrawLine(controller.Position(), statsModel.forward * statsModel.weaponRange, Color.red);
+			IAttackable attackable = GetAttackableTarget ();
+			TryDamageTarget (attackable);
 
 			//charge forward:
 			controller.MoveForward(chargeSpeed);
 			passedChargeDist += chargeSpeed * Time.deltaTime;
 		}
 
-		private void TriggerOther(Collider2D other){
-			IAttackable target = other.GetComponent<IAttackable> ();
-			if (target != null && target != (IAttackable)controller) {
+		//get the target that is in attack range
+		private IAttackable GetAttackableTarget(){
+			RaycastHit2D hit = Physics2D.Raycast (controller.Position (), statsModel.forward, statsModel.weaponRange, targetLM);
+			if (hit.collider != null) {
+				IAttackable target = hit.collider.GetComponent<IAttackable> ();
+				return target;
+			}
+
+			return null;
+		}
+
+		//apply damage to target (if we can!)
+		private void TryDamageTarget(IAttackable target){
+			if (target != null) {
 				target.ApplyDamage (chargeDamage);
-				if (target == statsModel.target) {
-					EndState ();
-				}
+				EndState ();
 			}
 		}
 
 		protected override void EndState () {
-			statsModel.onTriggerOther -= TriggerOther;
 			controller.SetAnimBool (chargeAnimName, false);
 			base.EndState ();
 		}
@@ -60,6 +71,7 @@ namespace AI_UtilitySystem{
 			copyState.chargeDamage = chargeDamage;
 			copyState.maxChargeDist = maxChargeDist;
 			copyState.chargeSpeed = chargeSpeed;
+			copyState.targetLM = targetLM;
 
 			return copyState;
 		}

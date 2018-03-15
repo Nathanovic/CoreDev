@@ -16,10 +16,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c2bbb7d8ba873e349833faf16cf7a6ff, type: 2}
   utility: 2
   cooldownTime: 0.5
-  chargeDamage: 1
-  obstacleLM:
-    serializedVersion: 2
-    m_Bits: 1
-  stopForObstacleDist: 0.5
+  chargeDamage: 3
+  chargeAnimName: chargeForward
   maxChargeDist: 10
   chargeSpeed: 5
+  targetLM:
+    serializedVersion: 2
+    m_Bits: 1024

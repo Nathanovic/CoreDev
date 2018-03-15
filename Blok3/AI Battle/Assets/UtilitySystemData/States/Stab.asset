@@ -8,15 +8,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c5463a0c0b50f44196d27d9d0a76f23, type: 3}
-  m_Name: Run Away
+  m_Script: {fileID: 11500000, guid: d0cf2ba69e01bcc41855c48cb263b355, type: 3}
+  m_Name: Stab
   m_EditorClassIdentifier: 
   decisionFactors:
   - {fileID: 11400000, guid: 195061d5dd98fdd43bc6830986d5355c, type: 2}
-  - {fileID: 11400000, guid: ab9ba37c1ad15154badcea763df6843a, type: 2}
-  - {fileID: 11400000, guid: 8dc1eff0c1effbd44a1ee4c3f0472093, type: 2}
   utility: 2
   cooldownTime: 1
-  minRunDist: 2
-  maxRunDist: 7
-  moveSpeed: 3
+  attackDamage: 1
+  attackAnimName: stab
