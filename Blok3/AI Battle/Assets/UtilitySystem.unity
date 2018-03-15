@@ -5056,7 +5056,7 @@ MonoBehaviour:
   maxEnergy: 10
   energy: 0
   stopForObstacleDist: 0.4
-  weaponRange: 1.2
+  weaponRange: 1
 --- !u!114 &1442436668
 MonoBehaviour:
   m_ObjectHideFlags: 0
