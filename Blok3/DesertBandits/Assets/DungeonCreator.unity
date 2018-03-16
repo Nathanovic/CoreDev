@@ -281,14 +281,15 @@ MonoBehaviour:
   wallPrefab: {fileID: 1808113916298566, guid: 9c639ce5e973b42428423d54a86618b8, type: 2}
   filledWallPrefab: {fileID: 1808113916298566, guid: 9c639ce5e973b42428423d54a86618b8,
     type: 2}
-  tileSize: 1.3
+  tileSize: 1
   dungeonStart:
-    x: 0
+    x: -4
     y: -2
   dungeonSize:
-    x: 10
-    y: 10
+    x: 11
+    y: 11
   roomCount: 3
+  compRooms: []
   rooms: []
   roomWidthMax: 4
   roomWidthMin: 2

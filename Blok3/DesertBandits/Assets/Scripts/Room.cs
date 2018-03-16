@@ -3,7 +3,8 @@
 [System.Serializable]
 public class Room {
 
-	public Coordinate start{ get; private set; }
+	//start coordinate isnt always right!
+	public Coordinate start;//{ get; private set; }
 	public Coordinate size{ get; private set; }
 	public Coordinate end{ get; private set; }
 
