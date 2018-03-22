@@ -11,9 +11,6 @@ namespace AI_UtilitySystem{
 		private AIBase controller;
 		public List<State> allStates;
 
-		public State[] states;
-		public DecisionFactor decFactor;
-
 		public State currentState;
 
 		void Start(){
@@ -53,6 +50,7 @@ namespace AI_UtilitySystem{
 
 		void Update(){
 			if (currentState.run) {
+				controller.SetPreviousPosition ();
 				currentState.Run ();
 			}
 		}

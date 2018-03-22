@@ -26,6 +26,8 @@ namespace AI_UtilitySystem{
 
 		public float weaponRange = 1.2f;
 
+		public Vector2 previousPosition;
+
 		private void Start(){
 			obstacleLM = LayerMask.GetMask ("Default", "Ground", "Obstacle");
 
@@ -70,6 +72,18 @@ namespace AI_UtilitySystem{
 			return farthestDist;
 		}
 
+		private float EnemyApproachSpeed(){
+			if (target == null)
+				return 0f;
+			else {
+				float distToTarget = Vector2.Distance(target.Position (), position);
+				float prevDistToTarget = Vector2.Distance(target.PrevPosition(), previousPosition);
+				float approachSpeed = (prevDistToTarget - distToTarget) / Time.deltaTime;
+				Debug.Log ("approach speed: " + approachSpeed.ToString ("F2") + "-> " + distToTarget.ToString("F2") + "-" + prevDistToTarget.ToString("F2"));
+				return approachSpeed;
+			}
+		}
+
 		public float GetStatValue(Stat s){
 			switch (s) {
 			case Stat.DistToTarget:
@@ -80,6 +94,8 @@ namespace AI_UtilitySystem{
 				return health;
 			case Stat.FarthestObjectDist:
 				return FarthestObjectDist ();
+			case Stat.EnemyApproachSpeed:
+				return EnemyApproachSpeed ();
 			default:
 				Debug.LogWarning ("Unknown stat: " + s.ToString ());
 				return 0f;
@@ -91,6 +107,7 @@ namespace AI_UtilitySystem{
 		DistToTarget,
 		Health,
 		Energy,
-		FarthestObjectDist
+		FarthestObjectDist,
+		EnemyApproachSpeed
 	}
 }

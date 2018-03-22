@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5376c85bd8807344694ebff0dc9fea80, type: 3}
+  m_Name: Evade
+  m_EditorClassIdentifier: 
+  decisionFactors:
+  - {fileID: 11400000, guid: 61887e61cb1e0244a832c79422a643f4, type: 2}
+  - {fileID: 11400000, guid: 0640929dcd251484ab1cdc44762fab11, type: 2}
+  utility: 3
+  cooldownTime: 0.5
+  minJumpDist: 0.3
+  maxJumpDist: 0.5
+  jumpSpeed: 5.5
+  minEvadeDist: 2
+  maxEvadeDist: 3
+  evadeSpeed: 3

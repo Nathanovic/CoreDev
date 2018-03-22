@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using AI_UtilitySystem;
 
+//this is the script that actually makes our agent do stuff the player sees, this behaviour is entirely controlled from the states
 //this is the only script that can change values of the AIStats script
 [RequireComponent(typeof(AIStats))]
 public class AIBase : MonoBehaviour, IAttackable {
@@ -30,6 +31,8 @@ public class AIBase : MonoBehaviour, IAttackable {
 
 		myRenderer = GetComponentInChildren<SpriteRenderer> ();
 		myColor = myRenderer.color;
+
+		myStats.previousPosition = Position ();
 	}
 
 	void Start(){
@@ -86,12 +89,15 @@ public class AIBase : MonoBehaviour, IAttackable {
 			return;
 		}
 
-		Vector2 desiredDir = myStats.target.Position () - Position ();
+		Vector2 targetPos = new Vector2 (myStats.target.Position ().x, transform.position.y);
+		Vector2 desiredDir = targetPos - Position ();
 		desiredDir = inverted ? -desiredDir : desiredDir;
 		float dotProduct = Vector2.Dot (myStats.forward, desiredDir);
 
-		if (dotProduct < 0f){
+		if (dotProduct < 0f) {
 			FlipFacingDirection ();	
+		} else {
+			myStats.forward = desiredDir.normalized;
 		}
 	}
 
@@ -107,8 +113,24 @@ public class AIBase : MonoBehaviour, IAttackable {
 		return new Vector2 (transform.position.x, transform.position.y);
 	}
 
+	public Vector2 PrevPosition(){
+		return myStats.previousPosition;
+	}
+
 	public void MoveForward(float speed){
 		rb.velocity = new Vector2(myStats.forward.x * speed, rb.velocity.y);
+	}
+
+	public void SetForward(Vector2 newForward){
+		myStats.forward = newForward;
+	}
+
+	public void MoveUp(float speed){
+		rb.velocity = Vector2.up * speed;
+	}
+
+	public void SetPreviousPosition(){//used to calculate the EnemyApproachSpeed (as a condition factor)
+		myStats.previousPosition = rb.position;		
 	}
 
 	public void FlipFacingDirection(){

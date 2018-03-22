@@ -5056,7 +5056,8 @@ MonoBehaviour:
   maxEnergy: 10
   energy: 0
   stopForObstacleDist: 0.4
-  weaponRange: 1
+  weaponRange: 0.7
+  previousPosition: {x: 0, y: 0}
 --- !u!114 &1442436668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5073,10 +5074,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0695b9960b5e7944cb48bf6d909c92b7, type: 2}
   - {fileID: 11400000, guid: 780965225a74f6445a8e900cac9a171d, type: 2}
   - {fileID: 11400000, guid: 86540dc22e7a7484395bf7143dae3337, type: 2}
-  states:
-  - {fileID: 0}
-  - {fileID: 0}
-  decFactor: {fileID: 11400000, guid: 2c7675cbe15318d428f28356b6c7c21c, type: 2}
   currentState: {fileID: 11400000, guid: 0695b9960b5e7944cb48bf6d909c92b7, type: 2}
 --- !u!61 &1442436669
 BoxCollider2D:
@@ -5133,7 +5130,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1442436665}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.2, y: 2.6, z: 0}
+  m_LocalPosition: {x: 2.56, y: 2.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1406524686}
@@ -5921,10 +5918,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e62e90c8194ed6b45857a6c539e0b26a, type: 2}
   - {fileID: 11400000, guid: 86540dc22e7a7484395bf7143dae3337, type: 2}
   - {fileID: 11400000, guid: 780965225a74f6445a8e900cac9a171d, type: 2}
-  states:
-  - {fileID: 0}
-  - {fileID: 0}
-  decFactor: {fileID: 11400000, guid: 2c7675cbe15318d428f28356b6c7c21c, type: 2}
+  - {fileID: 11400000, guid: 46365090df833414db73edb808383df2, type: 2}
   currentState: {fileID: 11400000, guid: 0695b9960b5e7944cb48bf6d909c92b7, type: 2}
 --- !u!61 &1817562750
 BoxCollider2D:
@@ -6031,7 +6025,8 @@ MonoBehaviour:
   maxEnergy: 10
   energy: 0
   stopForObstacleDist: 0.4
-  weaponRange: 1.2
+  weaponRange: 0.7
+  previousPosition: {x: 0, y: 0}
 --- !u!114 &1817562755
 MonoBehaviour:
   m_ObjectHideFlags: 0
