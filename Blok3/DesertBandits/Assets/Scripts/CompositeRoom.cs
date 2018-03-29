@@ -4,11 +4,16 @@ using UnityEngine;
 [System.Serializable]
 public class CompositeRoom {
 
+	public List<Tile> adjacentTiles;
+	public List<Tile> roomTiles;
 	public List<Room> connectedRooms;
 
 	public CompositeRoom(List<Room> rooms){
 		connectedRooms = new List<Room> ();
 		AddRooms (rooms);
+		foreach (Room r in rooms) {
+			
+		}
 	}
 
 	public void AddRooms(List<Room> rooms){
@@ -34,7 +39,8 @@ public class CompositeRoom {
 
 	public bool Overlap (Room other){
 		foreach (Room r in connectedRooms) {
-			if (r.Overlap (other)) {
+			r.TryMergeWithRoom (other);
+			if (r.isComposite) {
 				return true;
 			}
 		}

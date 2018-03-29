@@ -20,9 +20,14 @@ public class Coordinate{
 		return new Coordinate (0, 0);
 	}
 
-	public static Coordinate Add(Coordinate a, Coordinate b){
-		int x = a.x + b.x;
-		int y = a.y + b.y;
+	public static Coordinate Add(Coordinate a, params Coordinate[] other){
+		int x = a.x;
+		int y = a.y;
+		for (int i = 0; i < other.Length; i++) {
+			x += other [i].x;
+			y += other [i].y;
+		}
+
 		return new Coordinate (x, y);
 	}
 }
