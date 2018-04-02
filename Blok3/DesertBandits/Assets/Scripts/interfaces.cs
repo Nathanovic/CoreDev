@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
+using System.Collections;
+using UnityEngine.Events;
 
-public interface IUniqueRoom{
-	Coordinate start{ get; set; }
-	Coordinate size{ get; set; }
-	Coordinate end{ get; set; }
-
-	bool Overlap(IUniqueRoom other);
+public interface IAttackable{
+	void ApplyDamage (int dmg);
+	bool ValidTarget ();//can be set to false if health equals zero
+	Vector3 Position ();
 }
