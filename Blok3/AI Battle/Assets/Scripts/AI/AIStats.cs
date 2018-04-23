@@ -79,7 +79,7 @@ namespace AI_UtilitySystem{
 				float distToTarget = Vector2.Distance(target.Position (), position);
 				float prevDistToTarget = Vector2.Distance(target.PrevPosition(), previousPosition);
 				float approachSpeed = (prevDistToTarget - distToTarget) / Time.deltaTime;
-				Debug.Log ("approach speed: " + approachSpeed.ToString ("F2") + "-> " + distToTarget.ToString("F2") + "-" + prevDistToTarget.ToString("F2"));
+				//Debug.Log ("approach speed: " + approachSpeed.ToString ("F2") + "-> " + distToTarget.ToString("F2") + "-" + prevDistToTarget.ToString("F2"));
 				return approachSpeed;
 			}
 		}
