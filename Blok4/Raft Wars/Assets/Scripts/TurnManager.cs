@@ -1,46 +1,61 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 //communicates with the players about whether they are allowed to do an action
-//this script is only ran on the server!
-public class TurnManager : MonoBehaviour {
+//the active player can only be updated on the server-side!
+public class TurnManager : NetworkBehaviour {
 
-	private static TurnManager _instance;
-	public static TurnManager Instance{
-		get{ 
-			if (_instance == null) {
-				GameObject obj = new GameObject ("Turn Manager");
-				obj.AddComponent<TurnManager> ();
-			}
-
-			return _instance;
-		}
-	}
+	public static TurnManager instance;
 
 	private const float waitTime = 1f;
-	private List<Player> players;
 	private int activePlayerIndex;
 
-	public delegate void PlayerDelegate(PlayerInfo playerInfo);
-	public event PlayerDelegate onActivePlayerChanged;
+	[SyncVar]
+	private List<int> players;
+
+	public int myNetID;
+
+	public delegate void OnActivePlayerChanged(int playerNetID);
+	public event OnActivePlayerChanged onActivePlayerChanged;
 
 	private void Awake(){
-		_instance = this;
-		players = new List<Player> ();
+		instance = this;
+		players = new List<int> ();
 	}
 
-	public void InitPlayer(Player player){
-		players.Add (player);
+	public void OnConnectedToServer(){
+		myNetID = GetComponent<NetworkIdentity> ().netId;
+		if (isServer) {
+			players.Add (myNetID);
+		} 
+		else {
+			CmdOnPlayerJoined (myNetID);	
+		}
 	}
 
 	private void Start () {
 		//choose first player random
 		int rndmPlayerIndex = Random.Range (0, players.Count);
 		activePlayerIndex = rndmPlayerIndex;
-		NextTurn ();
 	}
 
 	public void NextTurn(){
+		if (isServer) {
+			RpcDoNextTurn ();
+		} 
+		else {
+			CmdDoNextTurn ();
+		}
+	}
+
+	[Command]
+	private void CmdOnPlayerJoined(int playerNetID){
+		players.Add (playerNetID);
+	}
+
+	[Command]
+	private void CmdDoNextTurn(){
 		activePlayerIndex++;
 		if (activePlayerIndex == players.Count) {
 			activePlayerIndex = 0;
@@ -48,8 +63,12 @@ public class TurnManager : MonoBehaviour {
 
 		Player activePlayer = players [activePlayerIndex];
 		activePlayer.GrantActionPermission ();
-		if (onActivePlayerChanged != null) {
-			onActivePlayerChanged (activePlayer.myInfo);
-		}
+
+		RpcDoNextTurn ();
+	}
+
+	[ClientRpc]
+	private void RpcDoNextTurn(int newActivePlayer){
+		onActivePlayerChanged (newActivePlayer);
 	}
 }
