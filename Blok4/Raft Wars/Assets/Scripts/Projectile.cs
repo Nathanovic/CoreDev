@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour {
 	[SerializeField]private float moveSpeed;
 	public UnityAction reachedTargetCallback;
 
-	private void Update(){
+	private void Update(){ 
 		
 	}
 }

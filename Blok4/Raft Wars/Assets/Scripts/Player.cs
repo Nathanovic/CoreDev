@@ -11,10 +11,6 @@ public class Player : MonoBehaviour {
 
 	private RaftActionPerformer[] raftActions;
 
-	private void Awake(){
-		TurnManager.Instance.InitPlayer (this);
-	}
-
 	private void Start(){
 		raftActions = GetComponents<RaftActionPerformer> ();
 	}
@@ -44,7 +40,7 @@ public class Player : MonoBehaviour {
 	}
 
 	public void OnActionFinished(){
-		TurnManager.Instance.NextTurn ();
+		TurnManager.instance.NextTurn ();
 	}
 }
 
