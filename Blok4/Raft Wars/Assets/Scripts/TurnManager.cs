@@ -7,25 +7,24 @@ using UnityEngine.Networking;
 public class TurnManager : NetworkBehaviour {
 
 	public static TurnManager instance;
+	private Player playerScript;
 
 	private const float waitTime = 1f;
 	private int activePlayerIndex;
+	private List<NetworkInstanceId> players;
+	public NetworkInstanceId myNetID;
 
-	[SyncVar]
-	private List<int> players;
-
-	public int myNetID;
-
-	public delegate void OnActivePlayerChanged(int playerNetID);
+	public delegate void OnActivePlayerChanged(NetworkInstanceId playerNetID);
 	public event OnActivePlayerChanged onActivePlayerChanged;
 
 	private void Awake(){
 		instance = this;
-		players = new List<int> ();
+		players = new List<NetworkInstanceId> ();
 	}
 
 	public void OnConnectedToServer(){
-		myNetID = GetComponent<NetworkIdentity> ().netId;
+		playerScript = GetComponent<Player> ();
+		myNetID = GetComponent<NetworkIdentity> ().netId;//used to evaluate who's turn it is
 		if (isServer) {
 			players.Add (myNetID);
 		} 
@@ -40,35 +39,29 @@ public class TurnManager : NetworkBehaviour {
 		activePlayerIndex = rndmPlayerIndex;
 	}
 
+	//can only be ran on the server
 	public void NextTurn(){
 		if (isServer) {
-			RpcDoNextTurn ();
+			RpcDoNextTurn (myNetID);
 		} 
-		else {
-			CmdDoNextTurn ();
-		}
 	}
 
 	[Command]
-	private void CmdOnPlayerJoined(int playerNetID){
-		players.Add (playerNetID);
+	void CmdOnPlayerJoined(NetworkInstanceId newPlayerID){
+		
 	}
 
-	[Command]
-	private void CmdDoNextTurn(){
+	[ClientRpc]
+	private void RpcDoNextTurn(){
 		activePlayerIndex++;
 		if (activePlayerIndex == players.Count) {
 			activePlayerIndex = 0;
 		}
 
-		Player activePlayer = players [activePlayerIndex];
-		activePlayer.GrantActionPermission ();
-
-		RpcDoNextTurn ();
-	}
-
-	[ClientRpc]
-	private void RpcDoNextTurn(int newActivePlayer){
 		onActivePlayerChanged (newActivePlayer);
 	}
-}
+
+
+
+}   
+ 

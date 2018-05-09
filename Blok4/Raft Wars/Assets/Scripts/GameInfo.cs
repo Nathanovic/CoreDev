@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
 //used to display the game info to the players
 //this is done with a syncvar
@@ -11,7 +12,7 @@ public class GameInfo : MonoBehaviour {
 		TurnManager.instance.onActivePlayerChanged += ChangeActivePlayerText;
 	}
 
-	private void ChangeActivePlayerText(int netID){
+	private void ChangeActivePlayerText(NetworkInstanceId netID){
 		//string colorText = ColorUtility.ToHtmlStringRGB (info.playerColor);
 		string colorText = "red";
 		string playerText = "<color=#" + colorText + ">" + netID + "</color>'s turn!";
