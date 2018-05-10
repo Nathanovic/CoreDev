@@ -4,64 +4,96 @@ using UnityEngine.Networking;
 
 //communicates with the players about whether they are allowed to do an action
 //the active player can only be updated on the server-side!
+//this script however, is active on all clients
 public class TurnManager : NetworkBehaviour {
 
 	public static TurnManager instance;
-	private Player playerScript;
 
 	private const float waitTime = 1f;
 	private int activePlayerIndex;
-	private List<NetworkInstanceId> players;
-	public NetworkInstanceId myNetID;
+	private Player playerScript;
+	public List<Player> players;//public QQQ
+	private List<NetworkInstanceId> playerIDs;
+	private NetworkInstanceId myNetID; 
 
-	public delegate void OnActivePlayerChanged(NetworkInstanceId playerNetID);
-	public event OnActivePlayerChanged onActivePlayerChanged;
+	public int requiredPlayerCount = 2;
+	private int playerCount;
 
 	private void Awake(){
+		if (instance != null)
+			return;
+		
 		instance = this;
-		players = new List<NetworkInstanceId> ();
+		DontDestroyOnLoad (gameObject);
+		playerIDs = new List<NetworkInstanceId> (); 
 	}
 
-	public void OnConnectedToServer(){
-		playerScript = GetComponent<Player> ();
-		myNetID = GetComponent<NetworkIdentity> ().netId;//used to evaluate who's turn it is
-		if (isServer) {
-			players.Add (myNetID);
-		} 
-		else {
-			CmdOnPlayerJoined (myNetID);	
+	#region connection handling
+	public void InitializeLocalPlayer (Player player) {
+		playerScript = player;
+		myNetID = playerScript.netId;//used to evaluate who's turn it is		
+	}
+
+	//only called on the server
+	public void InitializeServerPlayer(Player player){ 
+		playerIDs.Add (player.netId);
+		players.Add (player);
+		player.myInfo.raftID = playerCount;
+		player.myInfo.netID = player.netId;
+
+		playerCount++;
+
+		if (playerCount == requiredPlayerCount) {
+			playerScript.GrantActionPermission ();
+
+			foreach (Player p in players) {
+				p.RpcInitializeRaft (p.myInfo.raftID);
+			}
 		}
 	}
+	#endregion
 
-	private void Start () {
-		//choose first player random
-		int rndmPlayerIndex = Random.Range (0, players.Count);
-		activePlayerIndex = rndmPlayerIndex;
-	}
-
-	//can only be ran on the server
+	#region turn handling
 	public void NextTurn(){
 		if (isServer) {
-			RpcDoNextTurn (myNetID);
-		} 
+			ServerNextTurn ();
+		}
+		else {
+			CmdClientTurnReady ();
+		}
 	}
 
 	[Command]
-	void CmdOnPlayerJoined(NetworkInstanceId newPlayerID){
-		
+	private void CmdClientTurnReady(){	
+		ServerNextTurn ();
+	}
+
+	private void ServerNextTurn(){
+		Debug.Log ("server next turn!");
+		activePlayerIndex++;
+		if (activePlayerIndex == playerIDs.Count) {
+			activePlayerIndex = 0;	
+			GrantLocalActionPermission ();
+		}
+		else {			
+			//NetworkInstanceId activeNetID = playerIDs [activePlayerIndex];
+			//RpcDoNextTurn (activeNetID);
+			Player activePlayer = players[activePlayerIndex];
+			activePlayer.RpcGrantActionPermission ();
+		}
 	}
 
 	[ClientRpc]
-	private void RpcDoNextTurn(){
-		activePlayerIndex++;
-		if (activePlayerIndex == players.Count) {
-			activePlayerIndex = 0;
+	private void RpcDoNextTurn(NetworkInstanceId activeNetID){
+		Debug.Log ("next turn: " + activeNetID.ToString() + " =?= " + myNetID.ToString());
+		if (activeNetID == myNetID) {		
+			GrantLocalActionPermission ();
 		}
-
-		onActivePlayerChanged (newActivePlayer);
 	}
 
-
-
+	private void GrantLocalActionPermission(){
+		playerScript.GrantActionPermission ();			
+	}
+	#endregion
 }   
  

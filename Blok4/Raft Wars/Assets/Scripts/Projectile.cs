@@ -7,8 +7,4 @@ public class Projectile : MonoBehaviour {
 	public Vector3 movement;
 	[SerializeField]private float moveSpeed;
 	public UnityAction reachedTargetCallback;
-
-	private void Update(){ 
-		
-	}
 }
