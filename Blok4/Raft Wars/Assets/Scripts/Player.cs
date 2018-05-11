@@ -73,7 +73,15 @@ public class Player : NetworkBehaviour {
 	}
 
 	public void OnActionFinished(){
-		TurnManager.instance.NextTurn ();
+		if (isServer)
+			TurnManager.instance.ServerNextTurn ();
+		else
+			CmdStartServerNextTurn ();
+	}
+
+	[Command]
+	private void CmdStartServerNextTurn(){
+		TurnManager.instance.ServerNextTurn ();
 	}
 }
 

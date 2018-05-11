@@ -12,19 +12,15 @@ public class TurnManager : NetworkBehaviour {
 	private const float waitTime = 1f;
 	private int activePlayerIndex;
 	private Player playerScript;
-	public List<Player> players;//public QQQ
-	private List<NetworkInstanceId> playerIDs;
+	private List<Player> players;
+	private List<NetworkInstanceId> playerIDs;//not used...
 	private NetworkInstanceId myNetID; 
 
 	public int requiredPlayerCount = 2;
 	private int playerCount;
 
-	private void Awake(){
-		if (instance != null)
-			return;
-		
+	private void Awake(){		
 		instance = this;
-		DontDestroyOnLoad (gameObject);
 		playerIDs = new List<NetworkInstanceId> (); 
 	}
 
@@ -54,21 +50,7 @@ public class TurnManager : NetworkBehaviour {
 	#endregion
 
 	#region turn handling
-	public void NextTurn(){
-		if (isServer) {
-			ServerNextTurn ();
-		}
-		else {
-			CmdClientTurnReady ();
-		}
-	}
-
-	[Command]
-	private void CmdClientTurnReady(){	
-		ServerNextTurn ();
-	}
-
-	private void ServerNextTurn(){
+	public void ServerNextTurn(){
 		Debug.Log ("server next turn!");
 		activePlayerIndex++;
 		if (activePlayerIndex == playerIDs.Count) {
@@ -80,14 +62,6 @@ public class TurnManager : NetworkBehaviour {
 			//RpcDoNextTurn (activeNetID);
 			Player activePlayer = players[activePlayerIndex];
 			activePlayer.RpcGrantActionPermission ();
-		}
-	}
-
-	[ClientRpc]
-	private void RpcDoNextTurn(NetworkInstanceId activeNetID){
-		Debug.Log ("next turn: " + activeNetID.ToString() + " =?= " + myNetID.ToString());
-		if (activeNetID == myNetID) {		
-			GrantLocalActionPermission ();
 		}
 	}
 
