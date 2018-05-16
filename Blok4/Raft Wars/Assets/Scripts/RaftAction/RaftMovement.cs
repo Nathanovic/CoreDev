@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.Events;
 
 public class RaftMovement : RaftActionPerformer {
@@ -17,37 +18,56 @@ public class RaftMovement : RaftActionPerformer {
 
 			if (newPos == targetPos) {
 				isMoving = false;
-				FinishAction ();
+				if (isServer) {
+					FinishAction ();
+				}
 			}
 		}
 	}
 
 	public override void EvaluateInput (out bool succes) {
 		Vector3 moveOffset = Vector3.zero;
+		int moveAnim = 0;
 		if (Input.GetKeyUp (KeyCode.LeftArrow)) {
 			moveOffset = -Vector3.right * moveDist;
+			moveAnim = 3;
 		}
 		else if (Input.GetKeyUp (KeyCode.RightArrow)) {
 			moveOffset = Vector3.right * moveDist;
+			moveAnim = 1;
 		}
 		else if (Input.GetKeyUp (KeyCode.DownArrow)) {
 			moveOffset = -Vector3.up * moveDist;
+			moveAnim = 2;
 		}
 		else if (Input.GetKeyUp (KeyCode.UpArrow)) {
 			moveOffset = Vector3.up * moveDist;
+			moveAnim = 0;
 		}
 
 		if (moveOffset != Vector3.zero) {
 			succes = true;
-			MoveRaft (moveOffset);
+			if (!isServer) {
+				CmdMoveRaft (moveOffset, moveAnim);
+			}
+			else {
+				CmdMoveRaft (moveOffset, moveAnim);
+			}
 		} 
 		else {
 			succes = false;
 		}
 	}
 
-	private void MoveRaft(Vector3 movement){
+	[Command]
+	private void CmdMoveRaft(Vector3 movement, int moveAnim){
+		RpcMoveRaft (movement, moveAnim);
+	}
+
+	[ClientRpc]
+	private void RpcMoveRaft(Vector3 movement, int moveAnim){
 		isMoving = true;
 		targetPos = transform.position + movement;
+		anim.SetInteger ("direction", moveAnim);
 	}
 }

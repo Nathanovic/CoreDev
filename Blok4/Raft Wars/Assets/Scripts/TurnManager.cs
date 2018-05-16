@@ -8,11 +8,13 @@ using UnityEngine.Networking;
 public class TurnManager : NetworkBehaviour {
 
 	public static TurnManager instance;
+	private GameInfo gameInfo;
 
 	private const float waitTime = 1f;
 	private int activePlayerIndex;
 	private Player playerScript;
 	private List<Player> players;
+	public List<NetworkConnection> connections;
 	private List<NetworkInstanceId> playerIDs;//not used...
 	private NetworkInstanceId myNetID; 
 
@@ -21,31 +23,53 @@ public class TurnManager : NetworkBehaviour {
 
 	private void Awake(){		
 		instance = this;
-		playerIDs = new List<NetworkInstanceId> (); 
+		players = new List<Player> ();
+		connections = new List<NetworkConnection> ();
+		playerIDs = new List<NetworkInstanceId> (); 	
+		gameInfo = GetComponent<GameInfo> ();
 	}
 
 	#region connection handling
 	public void InitializeLocalPlayer (Player player) {
 		playerScript = player;
-		myNetID = playerScript.netId;//used to evaluate who's turn it is		
+		myNetID = playerScript.netId;//used to evaluate who's turn it is	
 	}
 
 	//only called on the server
 	public void InitializeServerPlayer(Player player){ 
+		Debug.Log ("initialize player: " + player.connectionToClient + "_" + player.connectionToServer);
+		connections.Add (player.connectionToClient);
+
 		playerIDs.Add (player.netId);
 		players.Add (player);
 		player.myInfo.raftID = playerCount;
 		player.myInfo.netID = player.netId;
 
+		if (!player.isLocalPlayer)
+			TargetInitializeLocalGameInfo (player.connectionToClient, playerCount);
+		else
+			InitializeGameInfo (playerCount);
+
 		playerCount++;
 
 		if (playerCount == requiredPlayerCount) {
-			playerScript.GrantActionPermission ();
-
 			foreach (Player p in players) {
 				p.RpcInitializeRaft (p.myInfo.raftID);
 			}
+
+			//server always begins:
+			playerScript.GrantActionPermission ();
+			gameInfo.RpcChangeActivePlayerText (playerScript.myInfo);
 		}
+	}
+
+	[TargetRpc]
+	private void TargetInitializeLocalGameInfo(NetworkConnection target, int raftID){
+		InitializeGameInfo (raftID);
+	}
+
+	private void InitializeGameInfo(int raftID){
+		gameInfo.InitializeLocalPlayer (raftID);
 	}
 	#endregion
 
@@ -53,20 +77,20 @@ public class TurnManager : NetworkBehaviour {
 	public void ServerNextTurn(){
 		Debug.Log ("server next turn!");
 		activePlayerIndex++;
+		PlayerInfo playerInfo = playerScript.myInfo;
 		if (activePlayerIndex == playerIDs.Count) {
 			activePlayerIndex = 0;	
-			GrantLocalActionPermission ();
+			playerScript.GrantActionPermission ();	
 		}
 		else {			
 			//NetworkInstanceId activeNetID = playerIDs [activePlayerIndex];
 			//RpcDoNextTurn (activeNetID);
 			Player activePlayer = players[activePlayerIndex];
+			playerInfo = activePlayer.myInfo;
 			activePlayer.RpcGrantActionPermission ();
 		}
-	}
 
-	private void GrantLocalActionPermission(){
-		playerScript.GrantActionPermission ();			
+		gameInfo.RpcChangeActivePlayerText (playerInfo);
 	}
 	#endregion
 }   

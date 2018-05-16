@@ -3,18 +3,21 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 
 //used to display the game info to the players
-//this is done with a syncvar
-public class GameInfo : MonoBehaviour {
+//this is using a rpc call from turnmanager
+public class GameInfo : NetworkBehaviour {
 
 	[SerializeField]private Text activePlayerText;
+	public int localRaftID;
 
-	private void Awake(){
-		//TurnManager.instance.onActivePlayerChanged += ChangeActivePlayerText;
+	public void InitializeLocalPlayer(int raftID){
+		localRaftID = raftID;
+		Debug.Log("initializing local raft id");
 	}
 
-	private void ChangeActivePlayerText(PlayerInfo info){
+	[ClientRpc]
+	public void RpcChangeActivePlayerText(PlayerInfo info){
+		string playerText = (info.raftID == localRaftID) ? "Your</color> turn!" : (info.playerName + "</color>'s turn!");
 		string colorText = ColorUtility.ToHtmlStringRGB (info.playerColor);
-		string playerText = "<color=#" + colorText + ">" + info.playerName + "</color>'s turn!";
-		activePlayerText.text = playerText;
+		activePlayerText.text = "<color=#" + colorText + ">" + playerText;
 	}
 }

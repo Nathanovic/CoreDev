@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114222490238153986}
   - component: {fileID: 114447319132383764}
   - component: {fileID: 114375786127915088}
+  - component: {fileID: 95588692468499920}
   m_Layer: 0
   m_Name: Raft
   m_TagString: Untagged
@@ -68,8 +69,26 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.8, y: 0.8}
   m_EdgeRadius: 0
+--- !u!95 &95588692468499920
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1890255822327656}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e704e2bcd43c0bf4495e303a3a035840, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114222490238153986
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -177,7 +196,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300004, guid: 0088faf57e9ca704285246a6344f77ba, type: 3}
+  m_Sprite: {fileID: 21300002, guid: 0088faf57e9ca704285246a6344f77ba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
