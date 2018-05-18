@@ -15,24 +15,23 @@ public class TurnManager : NetworkBehaviour {
 	private Player playerScript;
 	private List<Player> players;
 	public List<NetworkConnection> connections;
-	private List<NetworkInstanceId> playerIDs;//not used...
-	private NetworkInstanceId myNetID; 
 
 	public int requiredPlayerCount = 2;
 	private int playerCount;
 
 	private void Awake(){		
 		instance = this;
-		players = new List<Player> ();
-		connections = new List<NetworkConnection> ();
-		playerIDs = new List<NetworkInstanceId> (); 	
 		gameInfo = GetComponent<GameInfo> ();
+
+		if (isServer) {
+			players = new List<Player> ();
+			connections = new List<NetworkConnection> ();
+		}
 	}
 
 	#region connection handling
 	public void InitializeLocalPlayer (Player player) {
 		playerScript = player;
-		myNetID = playerScript.netId;//used to evaluate who's turn it is	
 	}
 
 	//only called on the server
@@ -40,7 +39,6 @@ public class TurnManager : NetworkBehaviour {
 		Debug.Log ("initialize player: " + player.connectionToClient + "_" + player.connectionToServer);
 		connections.Add (player.connectionToClient);
 
-		playerIDs.Add (player.netId);
 		players.Add (player);
 		player.myInfo.raftID = playerCount;
 		player.myInfo.netID = player.netId;
@@ -78,7 +76,7 @@ public class TurnManager : NetworkBehaviour {
 		Debug.Log ("server next turn!");
 		activePlayerIndex++;
 		PlayerInfo playerInfo = playerScript.myInfo;
-		if (activePlayerIndex == playerIDs.Count) {
+		if (activePlayerIndex == players.Count) {
 			activePlayerIndex = 0;	
 			playerScript.GrantActionPermission ();	
 		}
