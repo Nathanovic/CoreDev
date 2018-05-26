@@ -6,34 +6,36 @@ using UnityEngine.Networking;
 [RequireComponent(typeof(RaftMovement))]
 public class Player : NetworkBehaviour {
 
-	public PlayerInfo myInfo; 
+	public User userInfo;
 	private bool canDoAction;
 
 	private RaftActionPerformer[] raftActions;
 
 	#region initialization handling
 	private void Start(){
-		raftActions = GetComponents<RaftActionPerformer> ();
+		if (isLocalPlayer) {
+			raftActions = GetComponents<RaftActionPerformer> ();
+			userInfo = NetworkManager.singleton.gameObject.GetComponent<User> ();
+			User newUserInfo = GetComponent<User> ();
+			newUserInfo.RegisterSelf (userInfo.userID, userInfo.userName);
+			Destroy (userInfo);
+			userInfo = newUserInfo;
+		}
+
 		if (isServer) {
+			userInfo = GetComponent<User> ();
 			TurnManager.instance.InitializeServerPlayer (this);
 		}
 	} 
 
-	public override void OnStartLocalPlayer () {
-		myInfo.playerName = GameManager.instance.GetNickname ();
-		//TurnManager.instance.CmdInitializePlayer (myInfo);
-	}
-
 	[ClientRpc]//client initialization:
-	public void RpcInitializeRaft(int raftID){ 
-		bool playerIsServer = (raftID == 0);
-		transform.name = playerIsServer ? "Raft_Server" : "Raft_Client";
-		//myInfo.playerName = playerIsServer ? "ServerRaft" : "ClientRaft";
-		myInfo.playerColor = playerIsServer ? Color.blue : Color.red; 
-		GetComponent<SpriteRenderer> ().color = Color.Lerp(myInfo.playerColor, Color.white, 0.9f);
-		transform.Translate (transform.right * raftID);
+	public void RpcInitializeRaft(int playerID, Color userColor){ 
+		if (isLocalPlayer) {
+			transform.name = "Raft_Local";//useful for debugging
+		}
 
-		Debug.Log ("initialize raft with id: " + raftID);
+		GetComponent<SpriteRenderer> ().color = Color.Lerp(userColor, Color.white, 0.9f);
+		transform.Translate (transform.right * playerID);
 	}
 	#endregion
 
@@ -65,12 +67,4 @@ public class Player : NetworkBehaviour {
 	public void OnActionStarted(){
 		canDoAction = false;
 	}
-}
-
-[System.Serializable]
-public struct PlayerInfo{
-	public int raftID;//is only updated on the server
-	public NetworkInstanceId netID;//is only updated on the server
-	public string playerName;
-	public Color playerColor;
 }

@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1726123e79f3b9947b442806ba9fa928, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myRaft: {fileID: 0}
   damage: 0
 --- !u!114 &114628347236823796
 MonoBehaviour:
@@ -132,7 +133,7 @@ MonoBehaviour:
     i13: 39
     i14: 53
     i15: 144
-  m_ServerOnly: 0
+  m_ServerOnly: 1
   m_LocalPlayerAuthority: 0
 --- !u!114 &114986809578225534
 MonoBehaviour:

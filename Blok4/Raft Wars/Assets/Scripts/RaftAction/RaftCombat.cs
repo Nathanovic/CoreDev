@@ -53,6 +53,7 @@ public class RaftCombat : RaftActionPerformer {
 
 		Projectile projectileScript = projectile.GetComponent<Projectile> ();
 		projectile.GetComponent<Rigidbody2D> ().velocity = lookDir * shootSpeed;
+		projectileScript.myRaft = transform;
 		projectileScript.damage = projectileDamage;
 
 		NetworkServer.Spawn (projectile);

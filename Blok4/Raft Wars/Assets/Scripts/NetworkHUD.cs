@@ -2,14 +2,23 @@
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
+//custom network HUD
 public class NetworkHUD : MonoBehaviour {
-	private NetworkManager manager;
-	public string homeIP = "192.168.178.234";
-	public string hkuIP = "xxxxxxx";
-	public Text connText;
 
-	void Start () {
-		manager = GetComponent<NetworkManager> ();
+	private CanvasGroup connectionPanel;
+
+	[SerializeField]private NetworkManager manager;
+	[SerializeField]private Text connText;
+	[SerializeField]private Text userText;
+
+	private void Start(){
+		connectionPanel = GetComponent<CanvasGroup> ();
+		connectionPanel.DeActivate ();
+	}
+
+	public void EnableGameHUD(string userName){
+		connectionPanel.Activate ();
+		userText.text = "Welcome " + userName + "!";
 	}
 
 	public void StartHost(){
@@ -18,23 +27,22 @@ public class NetworkHUD : MonoBehaviour {
 	}
 
 	public void StartClientHome(){
-		manager.networkAddress = homeIP;
-		StartClient ();
-	}
-	public void StartClientCustom(){
-		StartClient ();
-	}
-	public void StartClientHKU(){
-		manager.networkAddress = hkuIP;
-		StartClient ();
-	}
-
-	private void StartClient(){
 		manager.StartClient ();	
-		connText.text = "Connecting to " + manager.networkAddress + "...";
+		connText.text = "Connecting to server...";
+	}
+}
+
+public static class ExtensionMethods{
+
+	public static void Activate(this CanvasGroup panel){
+		panel.alpha = 1f;
+		panel.interactable = true;
+		panel.blocksRaycasts = true;
 	}
 
-	public void SetIP(string newIP){
-		manager.networkAddress = newIP;
+	public static void DeActivate(this CanvasGroup panel){
+		panel.alpha = 0f;
+		panel.interactable = false;
+		panel.blocksRaycasts = false;
 	}
 }

@@ -13,15 +13,15 @@ public class TurnManager : NetworkBehaviour {
 	private const float waitTime = 1f;
 	private int activePlayerIndex;
 	private List<Player> players;
-	public List<NetworkConnection> connections;
 
 	private int requiredPlayerCount = 2;
 	private int playerCount;
 
+	[SerializeField]private Color[] colors;
+
 	private void Awake(){		
 		instance = this;
 		players = new List<Player> ();
-		connections = new List<NetworkConnection> ();
 		gameInfo = GetComponent<GameInfo> ();
 
 		requiredPlayerCount = GameManager.instance.GetPlayerCount ();
@@ -30,12 +30,10 @@ public class TurnManager : NetworkBehaviour {
 	#region connection handling
 	//only called on the server
 	public void InitializeServerPlayer(Player player){ 
-		Debug.Log ("initialize player: " + player.connectionToClient + "_" + player.connectionToServer);
-		connections.Add (player.connectionToClient);
+		//Debug.Log ("initialize player: " + player.connectionToClient + "_" + player.connectionToServer);
 
 		players.Add (player);
-		player.myInfo.raftID = playerCount;
-		player.myInfo.netID = player.netId;
+		//player.userInfo.SetUserData (userID, userName, colors [playerCount]);
 
 		if (!player.isLocalPlayer)
 			TargetInitializeLocalGameInfo (player.connectionToClient, playerCount);
@@ -45,8 +43,9 @@ public class TurnManager : NetworkBehaviour {
 		playerCount++;
 
 		if (playerCount == requiredPlayerCount) {
-			foreach (Player p in players) {
-				p.RpcInitializeRaft (p.myInfo.raftID);
+			for (int i = 0; i < players.Count; i ++) {
+				players [i].RpcInitializeRaft (i, colors[i]);
+				players [i].userInfo.ServerSetUserColor (colors [i]);
 			}
 
 			//server always begins:
@@ -68,18 +67,18 @@ public class TurnManager : NetworkBehaviour {
 	#region turn handling
 	public void ServerNextTurn(){
 		activePlayerIndex++;
-		PlayerInfo playerInfo = players[0].myInfo;
+		User info = players[0].userInfo;
 		Player activePlayer = players [0];
 		if (activePlayerIndex == players.Count) {
 			activePlayerIndex = 0;	
 		}
 		else {			
 			activePlayer = players[activePlayerIndex];
-			playerInfo = activePlayer.myInfo;
+			info = activePlayer.userInfo;
 		}
 
 		activePlayer.RpcGrantActionPermission ();
-		gameInfo.RpcChangeActivePlayerText (playerInfo);
+		gameInfo.RpcChangeActivePlayerText (info.userID, info.userName, info.playerColor);
 	}
 	#endregion
 }   

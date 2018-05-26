@@ -5,6 +5,7 @@ public delegate void SimpleDelegate();
 
 public class Projectile : MonoBehaviour {
 
+	public Transform myRaft;
 	public int damage;
 	public event SimpleDelegate onDestroy;
 
@@ -18,5 +19,13 @@ public class Projectile : MonoBehaviour {
 		}
 
 		GameObject.Destroy (gameObject);
+	}
+
+	private void OnTriggerEnter2D(Collider2D other){
+		if (other.transform != myRaft && other.tag == "Player") {
+			other.GetComponent<Health> ().TakeDamage (damage);
+
+			DestroySelf ();
+		}
 	}
 }
