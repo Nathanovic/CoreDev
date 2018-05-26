@@ -104,7 +104,6 @@ MonoBehaviour:
     raftID: 0
     playerName: Blackbeard
     playerColor: {r: 0.36983216, g: 0.27043685, b: 0.89705884, a: 1}
-    canDoAction: 0
 --- !u!114 &114375786127915088
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -148,6 +147,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8c2ae0aeff969044b9bc90a5bc484af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 1478811800488772, guid: 2559c8fbace4d194b85531693e273590,
+    type: 2}
+  projectileDamage: 2
+  shootSpeed: 3
+  projectileOffset: 0.4
 --- !u!114 &114636304236176342
 MonoBehaviour:
   m_ObjectHideFlags: 1

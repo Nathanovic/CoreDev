@@ -8,7 +8,13 @@ public class RaftMovement : RaftActionPerformer {
 	[SerializeField]private float moveSpeed;
 
 	private bool isMoving;
+	public Vector3 lookDir{ get; private set; }
 	private Vector3 targetPos;
+
+	protected override void Start(){
+		base.Start ();
+		lookDir = Vector3.up;
+	}
 
 	private void Update(){
 		if (isMoving) {
@@ -19,7 +25,7 @@ public class RaftMovement : RaftActionPerformer {
 			if (newPos == targetPos) {
 				isMoving = false;
 				if (isServer) {
-					FinishAction ();
+					ServerOnActionFinished ();
 				}
 			}
 		}
@@ -67,6 +73,7 @@ public class RaftMovement : RaftActionPerformer {
 	[ClientRpc]
 	private void RpcMoveRaft(Vector3 movement, int moveAnim){
 		isMoving = true;
+		lookDir = movement;
 		targetPos = transform.position + movement;
 		anim.SetInteger ("direction", moveAnim);
 	}

@@ -12,35 +12,27 @@ public class TurnManager : NetworkBehaviour {
 
 	private const float waitTime = 1f;
 	private int activePlayerIndex;
-	private Player playerScript;
 	private List<Player> players;
 	public List<NetworkConnection> connections;
-	private List<NetworkInstanceId> playerIDs;//not used...
-	private NetworkInstanceId myNetID; 
 
-	public int requiredPlayerCount = 2;
+	private int requiredPlayerCount = 2;
 	private int playerCount;
 
 	private void Awake(){		
 		instance = this;
 		players = new List<Player> ();
 		connections = new List<NetworkConnection> ();
-		playerIDs = new List<NetworkInstanceId> (); 	
 		gameInfo = GetComponent<GameInfo> ();
+
+		requiredPlayerCount = GameManager.instance.GetPlayerCount ();
 	}
 
 	#region connection handling
-	public void InitializeLocalPlayer (Player player) {
-		playerScript = player;
-		myNetID = playerScript.netId;//used to evaluate who's turn it is	
-	}
-
 	//only called on the server
 	public void InitializeServerPlayer(Player player){ 
 		Debug.Log ("initialize player: " + player.connectionToClient + "_" + player.connectionToServer);
 		connections.Add (player.connectionToClient);
 
-		playerIDs.Add (player.netId);
 		players.Add (player);
 		player.myInfo.raftID = playerCount;
 		player.myInfo.netID = player.netId;
@@ -58,8 +50,8 @@ public class TurnManager : NetworkBehaviour {
 			}
 
 			//server always begins:
-			playerScript.GrantActionPermission ();
-			gameInfo.RpcChangeActivePlayerText (playerScript.myInfo);
+			activePlayerIndex = players.Count - 1;
+			ServerNextTurn ();
 		}
 	}
 
@@ -75,21 +67,18 @@ public class TurnManager : NetworkBehaviour {
 
 	#region turn handling
 	public void ServerNextTurn(){
-		Debug.Log ("server next turn!");
 		activePlayerIndex++;
-		PlayerInfo playerInfo = playerScript.myInfo;
-		if (activePlayerIndex == playerIDs.Count) {
+		PlayerInfo playerInfo = players[0].myInfo;
+		Player activePlayer = players [0];
+		if (activePlayerIndex == players.Count) {
 			activePlayerIndex = 0;	
-			playerScript.GrantActionPermission ();	
 		}
 		else {			
-			//NetworkInstanceId activeNetID = playerIDs [activePlayerIndex];
-			//RpcDoNextTurn (activeNetID);
-			Player activePlayer = players[activePlayerIndex];
+			activePlayer = players[activePlayerIndex];
 			playerInfo = activePlayer.myInfo;
-			activePlayer.RpcGrantActionPermission ();
 		}
 
+		activePlayer.RpcGrantActionPermission ();
 		gameInfo.RpcChangeActivePlayerText (playerInfo);
 	}
 	#endregion

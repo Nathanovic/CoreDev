@@ -20,14 +20,15 @@ public class Player : NetworkBehaviour {
 	} 
 
 	public override void OnStartLocalPlayer () {
-		TurnManager.instance.InitializeLocalPlayer (this);
+		myInfo.playerName = GameManager.instance.GetNickname ();
+		//TurnManager.instance.CmdInitializePlayer (myInfo);
 	}
 
 	[ClientRpc]//client initialization:
 	public void RpcInitializeRaft(int raftID){ 
 		bool playerIsServer = (raftID == 0);
 		transform.name = playerIsServer ? "Raft_Server" : "Raft_Client";
-		myInfo.playerName = playerIsServer ? "ServerRaft" : "ClientRaft";
+		//myInfo.playerName = playerIsServer ? "ServerRaft" : "ClientRaft";
 		myInfo.playerColor = playerIsServer ? Color.blue : Color.red; 
 		GetComponent<SpriteRenderer> ().color = Color.Lerp(myInfo.playerColor, Color.white, 0.9f);
 		transform.Translate (transform.right * raftID);
@@ -63,18 +64,6 @@ public class Player : NetworkBehaviour {
 
 	public void OnActionStarted(){
 		canDoAction = false;
-	}
-
-	public void OnActionFinished(){
-		if (isServer)
-			TurnManager.instance.ServerNextTurn ();
-		else
-			CmdStartServerNextTurn ();
-	}
-
-	[Command]
-	private void CmdStartServerNextTurn(){
-		TurnManager.instance.ServerNextTurn ();
 	}
 }
 
