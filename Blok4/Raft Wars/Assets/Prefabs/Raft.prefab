@@ -155,8 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 265307552f279ba489a2b71542839368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 3
-  currentHealth: 3
+  maxHealth: 5
   healthBarFill: {fileID: 224022329431580470}
 --- !u!114 &114206285658187600
 MonoBehaviour:
@@ -330,12 +329,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1890255822327656}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adfcfda4708927441870ed2d077834cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ff32f75f5cd8bc408183c7e4069d987, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   userID: 0
   userName: 
   playerColor: {r: 0, g: 0, b: 0, a: 0}
+  score: 0
 --- !u!212 &212866835676490898
 SpriteRenderer:
   m_ObjectHideFlags: 1

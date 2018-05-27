@@ -17,7 +17,7 @@ public class Login : MonoBehaviour {
 	private const string USERID_KEY = "id";
 	private const string USERNAME_KEY = "name";
 
-	[SerializeField]private User userScript;
+	[SerializeField]private UserStats userScript;
 
 	[SerializeField]private InputField mailField; 
 	[SerializeField]private InputField passwordField; 
@@ -28,14 +28,19 @@ public class Login : MonoBehaviour {
 	private CanvasGroup loginPanel; 
 	[SerializeField]private NetworkHUD gameConnectScript;
 
-	void Start () {
+	private void Start () {
 		loginPanel = GetComponent<CanvasGroup> ();
-		loginPanel.Activate ();
 
-		filledMail = PlayerPrefs.GetString ("_mail");
-		filledPassword = PlayerPrefs.GetString ("_password");
-		mailField.text = filledMail;
-		passwordField.text = filledPassword;
+		if (!GameManager.instance.loggedIn) {
+			loginPanel.Activate ();
+			filledMail = PlayerPrefs.GetString ("_mail");
+			filledPassword = PlayerPrefs.GetString ("_password");
+			mailField.text = filledMail;
+			passwordField.text = filledPassword;
+		}
+		else {
+			EnterConnectionHUD ();
+		}
 	}
 	
 	public void SetMail(string mail){
@@ -63,9 +68,14 @@ public class Login : MonoBehaviour {
 
 		userScript.Login (userID, userName);
 		webHandler.SetUserSessionID (userID.ToString());
+		GameManager.instance.PlayerLoggedIn (userName);
 
+		EnterConnectionHUD ();
+	}
+
+	private void EnterConnectionHUD(){
 		loginPanel.DeActivate ();
-		gameConnectScript.EnableGameHUD (userName);
+		gameConnectScript.EnableGameHUD (GameManager.instance.userName);		
 	}
 
 	private void HandleLoginError(string error){

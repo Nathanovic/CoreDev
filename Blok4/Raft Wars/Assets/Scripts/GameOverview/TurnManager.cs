@@ -9,6 +9,7 @@ public class TurnManager : NetworkBehaviour {
 
 	public static TurnManager instance;
 	private GameInfo gameInfo;
+	[SerializeField]private GameResult gameEndScript;
 
 	private const float waitTime = 1f;
 	private int activePlayerIndex;
@@ -16,6 +17,7 @@ public class TurnManager : NetworkBehaviour {
 
 	private int requiredPlayerCount = 2;
 	private int playerCount;
+	private int deadPlayerCount;
 
 	[SerializeField]private Color[] colors;
 
@@ -48,7 +50,7 @@ public class TurnManager : NetworkBehaviour {
 				players [i].userInfo.ServerSetUserColor (colors [i]);
 			}
 
-			//server always begins:
+			//server always begins (lazyness):
 			activePlayerIndex = players.Count - 1;
 			ServerNextTurn ();
 		}
@@ -67,7 +69,7 @@ public class TurnManager : NetworkBehaviour {
 	#region turn handling
 	public void ServerNextTurn(){
 		activePlayerIndex++;
-		User info = players[0].userInfo;
+		UserStats info = players[0].userInfo;
 		Player activePlayer = players [0];
 		if (activePlayerIndex == players.Count) {
 			activePlayerIndex = 0;	
@@ -77,9 +79,47 @@ public class TurnManager : NetworkBehaviour {
 			info = activePlayer.userInfo;
 		}
 
-		activePlayer.RpcGrantActionPermission ();
-		gameInfo.RpcChangeActivePlayerText (info.userID, info.userName, info.playerColor);
+		if (activePlayer.alive) {
+			activePlayer.RpcGrantActionPermission ();
+			gameInfo.RpcChangeActivePlayerText (info.userID, info.userName, info.playerColor);
+		}
+		else {
+			ServerNextTurn ();
+		}
 	}
 	#endregion
+
+	public void ServerPlayerDied(Player player){
+		deadPlayerCount++;
+		if (deadPlayerCount == (players.Count - 1)) {
+			Debug.Log("game ended!");
+
+			Player winningPlayer = null;
+			string winningPlayerName = "";
+			foreach (Player p in players) {
+				if (p.alive) {
+					winningPlayer = p;
+					winningPlayerName = p.userInfo.userName;
+				}
+
+				p.userInfo.ServerEndGameReward (p.alive);
+			}
+
+			foreach (Player p in players) {
+				//string userName = p.userInfo.userName;
+				int userScore = p.userInfo.score;
+				bool playerWon = p == winningPlayer;
+				if (p.isLocalPlayer)
+					gameEndScript.ServerShowGameResult (winningPlayerName, userScore, playerWon);
+				else
+					TargetShowGameResult (p.connectionToClient, winningPlayerName, userScore, playerWon);
+			}
+		}
+	}
+
+	[TargetRpc]
+	public void TargetShowGameResult(NetworkConnection target, string winningPlayer, int myScore, bool playerWon){
+		gameEndScript.ServerShowGameResult (winningPlayer, myScore, playerWon);
+	}
 }   
  

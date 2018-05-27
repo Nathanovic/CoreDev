@@ -4,10 +4,12 @@ using UnityEngine.Networking;
 //this script is used to get the structure the action handling of the player 
 //whether the player is allowed to do an action is communicated from the ActionManager
 [RequireComponent(typeof(RaftMovement))]
+[RequireComponent(typeof(Health))]
 public class Player : NetworkBehaviour {
 
-	public User userInfo;
+	public UserStats userInfo;
 	private bool canDoAction;
+	public bool alive{ get; private set; }
 
 	private RaftActionPerformer[] raftActions;
 
@@ -15,16 +17,17 @@ public class Player : NetworkBehaviour {
 	private void Start(){
 		if (isLocalPlayer) {
 			raftActions = GetComponents<RaftActionPerformer> ();
-			userInfo = NetworkManager.singleton.gameObject.GetComponent<User> ();
-			User newUserInfo = GetComponent<User> ();
-			newUserInfo.RegisterSelf (userInfo.userID, userInfo.userName);
-			Destroy (userInfo);
+			UserStats localUserInfo = NetworkManager.singleton.gameObject.GetComponent<UserStats> ();
+			UserStats newUserInfo = GetComponent<UserStats> ();
+			newUserInfo.RegisterSelf (localUserInfo.userID, localUserInfo.userName);
 			userInfo = newUserInfo;
 		}
 
 		if (isServer) {
-			userInfo = GetComponent<User> ();
+			alive = true;
+			userInfo = GetComponent<UserStats> ();
 			TurnManager.instance.InitializeServerPlayer (this);
+			GetComponent<Health> ().onDie += ServerPlayerDied;
 		}
 	} 
 
@@ -52,6 +55,12 @@ public class Player : NetworkBehaviour {
 				break;
 			}
 		}
+	}
+
+	private void ServerPlayerDied(){
+		alive = false;
+		GetComponent<BoxCollider2D> ().enabled = false;
+		TurnManager.instance.ServerPlayerDied (this);
 	}
 
 	[ClientRpc]

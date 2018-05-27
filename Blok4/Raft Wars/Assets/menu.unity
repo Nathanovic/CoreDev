@@ -648,6 +648,7 @@ GameObject:
   - component: {fileID: 748296160}
   - component: {fileID: 748296163}
   - component: {fileID: 748296162}
+  - component: {fileID: 748296164}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -759,12 +760,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 748296159}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adfcfda4708927441870ed2d077834cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ff32f75f5cd8bc408183c7e4069d987, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   userID: 0
   userName: 
   playerColor: {r: 0, g: 0, b: 0, a: 0}
+  score: 0
 --- !u!114 &748296163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -776,6 +778,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 482bbf206a7de0a4d9eef1aff2523124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &748296164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 748296159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e554f189b4e9d041ab6d7e8c4bbb90a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCountText: {fileID: 173073350}
 --- !u!1 &805025975
 GameObject:
   m_ObjectHideFlags: 0
@@ -1726,7 +1740,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1594781822
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour {
 	public Transform myRaft;
 	public int damage;
 	public event SimpleDelegate onDestroy;
+	public event DamageDelegate onDamageDealt;
 
 	private void Start(){
 		Invoke ("DestroySelf", 2f);
@@ -22,9 +23,10 @@ public class Projectile : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter2D(Collider2D other){
-		if (other.transform != myRaft && other.tag == "Player") {
+		if (myRaft != null && other.transform != myRaft && other.tag == "Player") {
 			other.GetComponent<Health> ().TakeDamage (damage);
 
+			onDamageDealt (damage);
 			DestroySelf ();
 		}
 	}

@@ -18,6 +18,8 @@ public class RaftCombat : RaftActionPerformer {
 	[SerializeField]private float shootSpeed = 3f;
 	[SerializeField]private float projectileOffset = 0.6f;
 
+	public event DamageDelegate onServerProjectileHit;
+
 	protected override void Start(){
 		base.Start ();
 		moveScript = GetComponent<RaftMovement> ();
@@ -27,27 +29,15 @@ public class RaftCombat : RaftActionPerformer {
 		if (Input.GetKeyUp (KeyCode.Space)) {
 			succes = true;
 
-			if (isServer)
-				ServerShoot ();
-			else
-				CmdLetServerShoot ();
+			CmdShootProjectile ();
 		} 
 		else {
 			succes = false;
 		}
 	}
 
-	//check if we are being hit
-	private void OnTriggerEnter2D(){
-		
-	}
-
 	[Command]
-	private void CmdLetServerShoot(){
-		ServerShoot ();
-	}
-
-	private void ServerShoot(){
+	private void CmdShootProjectile(){
 		Vector3 spawnPos = transform.position + lookDir * projectileOffset;
 		GameObject projectile = GameObject.Instantiate (projectilePrefab, spawnPos, Quaternion.identity);
 
@@ -57,6 +47,11 @@ public class RaftCombat : RaftActionPerformer {
 		projectileScript.damage = projectileDamage;
 
 		NetworkServer.Spawn (projectile);
+		projectileScript.onDamageDealt += ServerOnProjectileHit;
 		projectileScript.onDestroy += ServerOnActionFinished;
+	}
+
+	private void ServerOnProjectileHit(int hitValue){
+		onServerProjectileHit (hitValue);
 	}
 }
