@@ -1,0 +1,10 @@
+username: nathanflier
+wachtwoord: phathoox6E
+session: PHPSESSID
+
+mijn foutmeldingen:
+- als iets essentieels fout gaat: "ERROR: 'message'"
+- bij overige fouten: "WARNING: 'message'"
+
+homework: 
+7a & 7b
