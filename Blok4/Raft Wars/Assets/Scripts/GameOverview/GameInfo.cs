@@ -11,7 +11,6 @@ public class GameInfo : NetworkBehaviour {
 
 	public void InitializeLocalPlayer(int userID){
 		localUserID = userID;
-		Debug.Log("GAME INFO_ initializing local raft id");
 	}
 
 	[ClientRpc]

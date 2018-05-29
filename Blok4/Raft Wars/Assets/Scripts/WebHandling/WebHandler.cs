@@ -6,8 +6,18 @@ using UnityEngine.Networking;
 //is active for as long as the game is active
 public class WebHandler : MonoBehaviour {
 
-	private const string SESSION_KEY = "userID";
+	public static WebHandler instance;
+
+	private const string SESSION_KEY = "PHPSESSID";
 	private string sessionID = "_";
+
+	private void Awake(){
+		instance = this;
+	}
+
+	private void Start(){
+		DontDestroyOnLoad (gameObject);
+	}
 
 	public IEnumerator ProcessWebRequest(string url, JsonReply succesCallback, ErrorReply failCallback, params string[] postArgs){
 		WWWForm form = new WWWForm();
@@ -27,10 +37,12 @@ public class WebHandler : MonoBehaviour {
 		else {
 			string webText = www.downloadHandler.text;
 			if (webText.StartsWith ("[") || webText.StartsWith ("{")) {
-				succesCallback (webText);
+				if(succesCallback != null)
+					succesCallback (webText);
 			}
 			else {
-				failCallback (webText);
+				if(failCallback != null)
+					failCallback (webText);
 			}
 		}
 	}

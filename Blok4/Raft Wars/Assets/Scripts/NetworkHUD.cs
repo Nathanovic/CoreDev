@@ -7,7 +7,7 @@ public class NetworkHUD : MonoBehaviour {
 
 	private CanvasGroup connectionPanel;
 
-	[SerializeField]private NetworkManager manager;
+	[SerializeField]private HighscorePanel highscoreScript;
 	[SerializeField]private Text connText;
 	[SerializeField]private Text userText;
 
@@ -20,15 +20,24 @@ public class NetworkHUD : MonoBehaviour {
 		connectionPanel.Activate ();
 		userText.text = "Welcome " + userName + "!";
 	}
+	public void EnableGameHUD(){
+		connectionPanel.Activate ();
+	}
 
 	public void StartHost(){
-		manager.StartHost();
+		NetworkManager.singleton.StartHost();
 		connText.text = "Setting up host...";
 	}
 
 	public void StartClientHome(){
-		manager.StartClient ();	
+		NetworkManager.singleton.StartClient ();	
 		connText.text = "Connecting to server...";
+	}
+
+	public void ShowHighscores(){
+		Debug.Log ("highscore");
+		connectionPanel.DeActivate ();
+		highscoreScript.Show ();
 	}
 }
 

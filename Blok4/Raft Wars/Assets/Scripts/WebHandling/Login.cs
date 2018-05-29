@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
@@ -12,10 +11,11 @@ public delegate void ErrorReply(string json);
 //gives all the data (if valid login) to the playerData script
 public class Login : MonoBehaviour {
 
-	[SerializeField]private WebHandler webHandler;
+	[SerializeField]private int gameID = 1;
 	private const string LOGIN_URL = "http://studenthome.hku.nl/~nathan.flier/loginPHP.php";
 	private const string USERID_KEY = "id";
 	private const string USERNAME_KEY = "name";
+	private const string SESSID_KEY = "PHPSESSID";
 
 	[SerializeField]private UserStats userScript;
 
@@ -53,11 +53,17 @@ public class Login : MonoBehaviour {
 		errorText.enabled = false;
 	}
 
+	private void EnterConnectionHUD(){
+		loginPanel.DeActivate ();
+		gameConnectScript.EnableGameHUD (GameManager.instance.userName);		
+	}
+
 	//"mail@mail.com" "PassWooord"
 	public void TryLogin(){
 		PlayerPrefs.SetString ("_mail", filledMail);
 		PlayerPrefs.SetString ("_password", filledPassword);
-		StartCoroutine(webHandler.ProcessWebRequest (LOGIN_URL, HandleLogin, HandleLoginError, "mail", filledMail, "password", filledPassword));
+		StartCoroutine(WebHandler.instance.ProcessWebRequest (LOGIN_URL, HandleLogin, HandleLoginError, 
+			"mail", filledMail, "password", filledPassword, "gameID", gameID.ToString()));
 	}
 
 	private void HandleLogin(string result){
@@ -65,17 +71,12 @@ public class Login : MonoBehaviour {
 
 		int userID = jsonObject [USERID_KEY].ToObject<int> ();
 		string userName = jsonObject [USERNAME_KEY].ToObject<string> ();
+		string sessionID = jsonObject [SESSID_KEY].ToObject<string> ();
 
-		userScript.Login (userID, userName);
-		webHandler.SetUserSessionID (userID.ToString());
-		GameManager.instance.PlayerLoggedIn (userName);
+		GameManager.instance.PlayerLoggedIn (userName, userID);
+		WebHandler.instance.SetUserSessionID (sessionID);
 
 		EnterConnectionHUD ();
-	}
-
-	private void EnterConnectionHUD(){
-		loginPanel.DeActivate ();
-		gameConnectScript.EnableGameHUD (GameManager.instance.userName);		
 	}
 
 	private void HandleLoginError(string error){

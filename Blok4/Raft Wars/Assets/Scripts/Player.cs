@@ -17,9 +17,10 @@ public class Player : NetworkBehaviour {
 	private void Start(){
 		if (isLocalPlayer) {
 			raftActions = GetComponents<RaftActionPerformer> ();
-			UserStats localUserInfo = NetworkManager.singleton.gameObject.GetComponent<UserStats> ();
+			string uName = GameManager.instance.userName;
+			int uID = GameManager.instance.userID;
 			UserStats newUserInfo = GetComponent<UserStats> ();
-			newUserInfo.RegisterSelf (localUserInfo.userID, localUserInfo.userName);
+			newUserInfo.RegisterSelf (uID, uName);
 			userInfo = newUserInfo;
 		}
 

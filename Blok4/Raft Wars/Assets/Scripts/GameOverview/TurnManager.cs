@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections;
 
 //communicates with the players about whether they are allowed to do an action
 //the active player can only be updated on the server-side!
@@ -92,34 +93,37 @@ public class TurnManager : NetworkBehaviour {
 	public void ServerPlayerDied(Player player){
 		deadPlayerCount++;
 		if (deadPlayerCount == (players.Count - 1)) {
-			Debug.Log("game ended!");
+			ShowGameResult ();
+		}
+	}
 
-			Player winningPlayer = null;
-			string winningPlayerName = "";
-			foreach (Player p in players) {
-				if (p.alive) {
-					winningPlayer = p;
-					winningPlayerName = p.userInfo.userName;
-				}
+	private void ShowGameResult(){
+		Debug.Log("game ended!");
 
-				p.userInfo.ServerEndGameReward (p.alive);
+		Player winningPlayer = null;
+		string winningPlayerName = "";
+		foreach (Player p in players) {
+			if (p.alive) {
+				winningPlayer = p;
+				winningPlayerName = p.userInfo.userName;
 			}
 
-			foreach (Player p in players) {
-				//string userName = p.userInfo.userName;
-				int userScore = p.userInfo.score;
-				bool playerWon = p == winningPlayer;
-				if (p.isLocalPlayer)
-					gameEndScript.ServerShowGameResult (winningPlayerName, userScore, playerWon);
-				else
-					TargetShowGameResult (p.connectionToClient, winningPlayerName, userScore, playerWon);
-			}
+			p.userInfo.ServerEndGameReward (p.alive);
+		}
+
+		foreach (Player p in players) {
+			int userScore = p.userInfo.score;
+			bool playerWon = p == winningPlayer;
+			if (p.isLocalPlayer)
+				gameEndScript.ShowGameResult (winningPlayerName, userScore, playerWon);
+			else
+				TargetShowGameResult (p.connectionToClient, winningPlayerName, userScore, playerWon);
 		}
 	}
 
 	[TargetRpc]
 	public void TargetShowGameResult(NetworkConnection target, string winningPlayer, int myScore, bool playerWon){
-		gameEndScript.ServerShowGameResult (winningPlayer, myScore, playerWon);
+		gameEndScript.ShowGameResult (winningPlayer, myScore, playerWon);
 	}
 }   
  

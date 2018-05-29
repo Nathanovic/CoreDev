@@ -17,7 +17,10 @@
 					InvalidInputError("Wrong password");
 				}
 				else{
-					$userRow += [ "PHPSESSID" => SESSION_ID ];
+					$_SESSION["userID"] = $userRow["id"];
+					$_SESSION["userName"] = $userRow["name"];
+					$_SESSION["gameID"] = $_POST["gameID"];
+					$userRow[ "PHPSESSID"] = SESSION_ID();
 					echo json_encode($userRow);
 				}
 			}

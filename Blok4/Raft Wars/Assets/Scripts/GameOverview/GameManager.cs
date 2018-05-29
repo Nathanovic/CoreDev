@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
-//only active on the server???, keeps track of the game progression and score
+//used to move data from the menu to the game
 public class GameManager : MonoBehaviour {
 
 	public static GameManager instance;
 
-	public bool loggedIn{ get; private set; }
-	public string userName{ get; private set; }
-	public Text playerCountText;
 	private int playerCount = 2;
-	private string nickname = "player";
+
+	public bool loggedIn{ get; private set; }
+	public int userID{ get; private set; }
+	public string userName{ get; private set; }
 
 	private void Awake(){
 		if (instance == null) {
@@ -28,23 +27,15 @@ public class GameManager : MonoBehaviour {
 
 	public void SetPlayerCount(float newPlayerCount){
 		playerCount = Mathf.RoundToInt(newPlayerCount);
-		playerCountText.text = playerCount + " players";
 	}
 
 	public int GetPlayerCount(){
 		return playerCount;
 	}
 
-	public void SetNickname(string newName){
-		nickname = newName;
-	}
-
-	public string GetNickname(){
-		return nickname;
-	}
-
-	public void PlayerLoggedIn(string _userName){
+	public void PlayerLoggedIn(string _userName, int _userID){
 		loggedIn = true;
 		userName = _userName;
+		userID = _userID;
 	}
 }
