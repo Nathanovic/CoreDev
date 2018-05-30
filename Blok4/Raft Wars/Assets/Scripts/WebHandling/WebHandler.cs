@@ -9,14 +9,10 @@ public class WebHandler : MonoBehaviour {
 	public static WebHandler instance;
 
 	private const string SESSION_KEY = "PHPSESSID";
-	private string sessionID = "_";
+	private static string sessionID = "_";
 
 	private void Awake(){
 		instance = this;
-	}
-
-	private void Start(){
-		DontDestroyOnLoad (gameObject);
 	}
 
 	public IEnumerator ProcessWebRequest(string url, JsonReply succesCallback, ErrorReply failCallback, params string[] postArgs){

@@ -43,7 +43,6 @@ public class GameResult : NetworkBehaviour {
 
 		string userName = info [0].username;
 		int score = info [0].score;
-		Debug.Log (score);
 
 		highScoreText.text = "highscore (" + userName + "): " + score.ToString();
 	}
@@ -55,6 +54,7 @@ public class GameResult : NetworkBehaviour {
 	}
 
 	public void ReturnToMenu(){
+		GameObject.Destroy (NetworkManager.singleton.gameObject);
 		NetworkManager.Shutdown ();
 		SceneManager.LoadScene (0);
 	}

@@ -35,7 +35,6 @@ public class NetworkHUD : MonoBehaviour {
 	}
 
 	public void ShowHighscores(){
-		Debug.Log ("highscore");
 		connectionPanel.DeActivate ();
 		highscoreScript.Show ();
 	}

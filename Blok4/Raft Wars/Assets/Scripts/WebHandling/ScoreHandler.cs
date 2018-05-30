@@ -25,7 +25,6 @@ public class ScoreHandler : MonoBehaviour {
 	}
 
 	private void GetScores(string result){
-		Debug.Log (result);
 		JArray jArray = JArray.Parse (result);
 		int scoreCount = jArray.Count;
 		List<ScoreInfo> scoreDict = new List<ScoreInfo> (scoreCount);
