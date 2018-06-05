@@ -6,5 +6,11 @@ mijn foutmeldingen:
 - als iets essentieels fout gaat: "ERROR: 'message'"
 - bij overige fouten: "WARNING: 'message'"
 
-homework: 
-7a & 7b
+user data:
+|Jack Sparrow|
+- mail: jacksparrow@hotmail.com
+- password: JackHasASparrow   
+
+|Harry|
+- mail: mail@mail.com
+- password: testUser
