@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 114947403069058958}
   - component: {fileID: 114381860561295132}
   m_Layer: 0
-  m_Name: raft
+  m_Name: Raft
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

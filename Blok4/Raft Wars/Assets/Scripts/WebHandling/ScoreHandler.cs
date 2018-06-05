@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ScoreHandler : MonoBehaviour {
 
-	private const string HIGHSCORE_URL = "studenthome.hku.nl/~nathan.flier/highscoresPHP.php";
+	private const string HIGHSCORE_URL = "studenthome.hku.nl/~nathan.flier/RaftWars_DB/highscores.php";
 	private const string SCORE_KEY = "score";
 	private const string USER_KEY = "name";
 

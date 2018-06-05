@@ -77,24 +77,6 @@
 			return null;
 		}
 	}
-	
-	/*
-	ShowScore($mysqli, 1);
-	function ShowScore($mysqli, $gameID){
-		$query = "SELECT * FROM scores
-		WHERE gameID = $gameID";
-		
-		$result = GetResult($mysqli, $query);
-		if ($result != null){
-			$row = $result->fetch_assoc();
-			do{
-				echo json_encode($row);
-				//echo $row["id"].": ".$row["mail"]."</br>";		
-			}
-			while ($row = $result->fetch_assoc());
-		}
-	}
-	*/
 ?>
 	<div id="login" <?php echo $loginStyle; ?>>
 		<form action="#" method="POST">

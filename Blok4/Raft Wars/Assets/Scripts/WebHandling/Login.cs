@@ -12,7 +12,7 @@ public delegate void ErrorReply(string json);
 public class Login : MonoBehaviour {
 
 	[SerializeField]private int gameID = 1;
-	private const string LOGIN_URL = "http://studenthome.hku.nl/~nathan.flier/loginPHP.php";
+	private const string LOGIN_URL = "http://studenthome.hku.nl/~nathan.flier/RaftWars_DB/login.php";
 	private const string USERID_KEY = "id";
 	private const string USERNAME_KEY = "name";
 	private const string SESSID_KEY = "PHPSESSID";
@@ -73,7 +73,7 @@ public class Login : MonoBehaviour {
 		string userName = jsonObject [USERNAME_KEY].ToObject<string> ();
 		string sessionID = jsonObject [SESSID_KEY].ToObject<string> ();
 
-		GameManager.instance.PlayerLoggedIn (userName, userID);
+		GameManager.instance.PlayerLoggedIn (userName, userID, filledPassword);
 		WebHandler.instance.SetUserSessionID (sessionID);
 
 		EnterConnectionHUD ();

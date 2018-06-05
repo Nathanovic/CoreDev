@@ -1,31 +1,17 @@
 <?php
-	//session_id('dl7rmblm6q0ggf2vraq9b0vum0');
 	$gameID = 0;
 	$resultLimit = 0;
-	if(isset($_POST['PHPSESSID'])){
+	if(strtoupper($_SERVER["REQUEST_METHOD"]) == "POST" && isset($_POST['PHPSESSID'])){
 		$sid = htmlspecialchars($_POST['PHPSESSID']);
 		session_id($sid);
 		$resultLimit = intval($_POST["limit"]);
 	}
 	else{
 		echo "ERROR: invalid session";
-		//header('Location: /~nathan.flier/login');
 	}
 	session_start();
 	$gameID = $_SESSION["gameID"];
 	require 'connect.php';
-		
-	/*
-	if(strtoupper($_SERVER["REQUEST_METHOD"]) == "POST"){
-		$mail = $_POST["mail"];
-		$password = $_POST["password"];
-		$mailValidation = ValidateEmail($mail);
-	*/		
-	
-	//login
-	//validate login 
-	//if true -> return user information + SESSION_ID()
-	//on send new data -> try 
 	
 	if(isset($_POST["achievedScore"])){
 		$userID = $_SESSION["userID"];
@@ -55,8 +41,7 @@
 			$resultArr = array();
 			$row = $result->fetch_assoc();
 			do{
-				array_push($resultArr, $row);
-				//echo $row["id"].": ".$row["mail"]."</br>";		
+				array_push($resultArr, $row);		
 			}
 			while ($row = $result->fetch_assoc());		
 

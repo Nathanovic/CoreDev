@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
 	public bool loggedIn{ get; private set; }
 	public int userID{ get; private set; }
 	public string userName{ get; private set; }
+	public string password{ get; private set; }
 
 	private void Awake(){
 		if (instance == null) {
@@ -33,9 +34,10 @@ public class GameManager : MonoBehaviour {
 		return playerCount;
 	}
 
-	public void PlayerLoggedIn(string _userName, int _userID){
+	public void PlayerLoggedIn(string _userName, int _userID, string _password){
 		loggedIn = true;
 		userName = _userName;
 		userID = _userID;
+		password = _password;
 	}
 }

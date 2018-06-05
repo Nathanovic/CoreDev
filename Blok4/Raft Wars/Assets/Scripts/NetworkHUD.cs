@@ -7,7 +7,6 @@ public class NetworkHUD : MonoBehaviour {
 
 	private CanvasGroup connectionPanel;
 
-	[SerializeField]private HighscorePanel highscoreScript;
 	[SerializeField]private Text connText;
 	[SerializeField]private Text userText;
 
@@ -34,9 +33,8 @@ public class NetworkHUD : MonoBehaviour {
 		connText.text = "Connecting to server...";
 	}
 
-	public void ShowHighscores(){
+	public void HidePanel(){
 		connectionPanel.DeActivate ();
-		highscoreScript.Show ();
 	}
 }
 
