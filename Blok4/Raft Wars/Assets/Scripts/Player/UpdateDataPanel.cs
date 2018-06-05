@@ -6,6 +6,11 @@ public class UpdateDataPanel : MonoBehaviour {
 
 	private UserDataPanel userDataScript;//used for first validating the user
 	private CanvasGroup panel;
+
+	private const string USERPAGE_URL = "http://studenthome.hku.nl/~nathan.flier/RaftWars_DB/userData.php";
+	private const string USERID_KEY = "userID";
+	[SerializeField]private string update_Key = "newPassword";
+
 	[SerializeField]private Text warningText;
 
 	private string newValue;
@@ -36,16 +41,26 @@ public class UpdateDataPanel : MonoBehaviour {
 	}
 
 	public void Cancel(){
-		warningText.enabled = false;
+		panel.DeActivate ();
+		userDataScript.RestoreStandardView ();
 	}
 
 	public void ConfirmNewValue(){
 		if (confirmNewValue != newValue) {
-			warningText.enabled = true;
-			warningText.text = "the input of these fields do not match";
-		} 
+			userDataScript.ShowWarning("the input of these fields do not match");
+		}
+		else if (newValue == "") {
+			userDataScript.ShowWarning("these fields should not be empty");
+		}
 		else {
-			Debug.Log ("confirm: " + newValue);
+			userDataScript.ShowSucces ("Updating...");
+			int uID = GameManager.instance.userID;
+			StartCoroutine(WebHandler.instance.ProcessWebRequest (USERPAGE_URL, userDataScript.ShowSucces, userDataScript.ShowWarning, 
+				USERID_KEY, uID.ToString(), update_Key, newValue));
+
+			if (update_Key == "newPassword") {
+				GameManager.instance.UpdatePassword (newValue);
+			}
 		}
 	}
 }

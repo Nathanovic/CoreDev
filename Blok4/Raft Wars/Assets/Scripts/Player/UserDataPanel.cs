@@ -8,7 +8,10 @@ public class UserDataPanel : MonoBehaviour {
 	private CanvasGroup panel;
 	[SerializeField]private CanvasGroup passwordCheckPanel;
 
+	[SerializeField]private Button updatePsswrdButton;
+	[SerializeField]private Button updateMailButton;
 	[SerializeField]private Text warningText;
+	[SerializeField]private Text succesText;
 
 	private string filledInCheckPassword;
 	private UnityAction validPasswordCallback;
@@ -40,11 +43,30 @@ public class UserDataPanel : MonoBehaviour {
 
 	public void EvaluatePassword(){
 		if (filledInCheckPassword == GameManager.instance.password) {
+			updatePsswrdButton.interactable = false;
+			updateMailButton.interactable = false;
+			passwordCheckPanel.DeActivate ();
 			validPasswordCallback ();
 		} 
 		else {
-			warningText.enabled = true;
-			warningText.text = "invalid password";
+			ShowWarning("invalid password");
 		}
+	}
+
+	public void RestoreStandardView(){
+		updatePsswrdButton.interactable = true;
+		updateMailButton.interactable = true;
+		warningText.enabled = false;
+		succesText.enabled = false;
+	}
+
+	public void ShowSucces(string result){
+		succesText.text = result;
+		succesText.enabled = true;
+	}
+
+	public void ShowWarning(string result){
+		warningText.text = result;
+		warningText.enabled = true;
 	}
 }

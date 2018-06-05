@@ -32,7 +32,7 @@ public class WebHandler : MonoBehaviour {
 		}  
 		else {
 			string webText = www.downloadHandler.text;
-			if (webText.StartsWith ("[") || webText.StartsWith ("{")) {
+			if (webText.StartsWith ("[") || webText.StartsWith ("{") || webText.Contains("succes")) {
 				if(succesCallback != null)
 					succesCallback (webText);
 			}

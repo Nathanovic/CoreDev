@@ -40,4 +40,8 @@ public class GameManager : MonoBehaviour {
 		userID = _userID;
 		password = _password;
 	}
+
+	public void UpdatePassword(string newPassword){
+		password = newPassword;
+	}
 }
