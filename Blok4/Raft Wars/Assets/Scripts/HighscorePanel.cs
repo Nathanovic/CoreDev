@@ -7,6 +7,7 @@ public class HighscorePanel : MonoBehaviour {
 
 	private ScoreHandler scoreScript;
 	[SerializeField]private NetworkHUD networkPanelScript;
+	private string condition = "";
 
 	private CanvasGroup panel;
 	[SerializeField]private UserScoreTextRow[] textRows = new UserScoreTextRow[3];
@@ -17,12 +18,17 @@ public class HighscorePanel : MonoBehaviour {
 		panel = GetComponent<CanvasGroup> ();
 		panel.DeActivate ();
 	}
+
+	public void ToggleTodayOnly(bool isTrue){
+		condition = isTrue ? "today" : "";
+		Show ();
+	}
 	
 	public void Show(){
 		panel.Activate ();
 		waitText.enabled = true;
 
-		scoreScript.GetScores (GetScores, null, textRows.Length);
+		scoreScript.GetScores (GetScores, null, textRows.Length, condition);
 	}
 
 	private void GetScores(List<ScoreInfo> scoreInfo){

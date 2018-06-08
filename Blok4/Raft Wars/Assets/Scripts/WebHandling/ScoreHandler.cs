@@ -10,18 +10,19 @@ public class ScoreHandler : MonoBehaviour {
 	private const string HIGHSCORE_URL = "studenthome.hku.nl/~nathan.flier/RaftWars_DB/highscores.php";
 	private const string SCORE_KEY = "score";
 	private const string USER_KEY = "name";
+	private const string CONDITION_KEY = "condition";
 
 	private UnityAction<List<ScoreInfo>> returnScoresCallback;
 	private UnityAction<string> returnErrorCallback;
 
 	[SerializeField]private Text errorText;
 	
-	public void GetScores(UnityAction<List<ScoreInfo>> callback, UnityAction<string> errorCallback, int scoreCount){
+	public void GetScores(UnityAction<List<ScoreInfo>> callback, UnityAction<string> errorCallback, int scoreCount, string condition = ""){
 		returnScoresCallback = callback;
 		returnErrorCallback = errorCallback;
 
 		StartCoroutine(WebHandler.instance.ProcessWebRequest (HIGHSCORE_URL, GetScores, HandleScoreError, 
-			"limit", scoreCount.ToString()));
+			"limit", scoreCount.ToString(), CONDITION_KEY, condition));
 	}
 
 	private void GetScores(string result){
