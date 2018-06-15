@@ -30,13 +30,9 @@ public class TurnManager : NetworkBehaviour {
 		requiredPlayerCount = GameManager.instance.GetPlayerCount ();
 	}
 
-	#region connection handling
 	//only called on the server
 	public void InitializeServerPlayer(Player player){ 
-		//Debug.Log ("initialize player: " + player.connectionToClient + "_" + player.connectionToServer);
-
 		players.Add (player);
-		//player.userInfo.SetUserData (userID, userName, colors [playerCount]);
 
 		if (!player.isLocalPlayer)
 			TargetInitializeLocalGameInfo (player.connectionToClient, playerCount);
@@ -51,7 +47,7 @@ public class TurnManager : NetworkBehaviour {
 				players [i].userInfo.ServerSetUserColor (colors [i]);
 			}
 
-			//server always begins (lazyness):
+			//server always begins (lazy solution):
 			activePlayerIndex = players.Count - 1;
 			ServerNextTurn ();
 		}
@@ -65,9 +61,7 @@ public class TurnManager : NetworkBehaviour {
 	private void InitializeGameInfo(int raftID){
 		gameInfo.InitializeLocalPlayer (raftID);
 	}
-	#endregion
 
-	#region turn handling
 	public void ServerNextTurn(){
 		activePlayerIndex++;
 		UserStats info = players[0].userInfo;
@@ -88,7 +82,6 @@ public class TurnManager : NetworkBehaviour {
 			ServerNextTurn ();
 		}
 	}
-	#endregion
 
 	public void ServerPlayerDied(Player player){
 		deadPlayerCount++;
