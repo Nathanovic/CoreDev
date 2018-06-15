@@ -40,11 +40,11 @@
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
 			// Albedo comes from a texture tinted by color
-			fixed4 c = tex2D (_MainTex, IN.uv_MainTex + half2(_Time.x, 0)) * _Color;
+			//fixed4 c = tex2D (_MainTex, IN.uv_MainTex + half2(_Time.x, 0)) * _Color;
 			//half2 screenUV = IN.screenPos.xy / IN.screenPos.w;
-			//half2 worldUV = IN.worldPos.xz;
+			half2 worldUV = IN.worldPos.xz;
 			//fixed4 c = tex2D (_MainTex, screenUV) * _Color;
-			//fixed4 c = tex2D (_MainTex, worldUV) * _Color;
+			fixed4 c = tex2D (_MainTex, worldUV) * _Color;
 
 			o.Albedo = c.rgb;
 			// Metallic and smoothness come from slider variables

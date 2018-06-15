@@ -5,7 +5,7 @@ using System.Collections;
 
 //communicates with the players about whether they are allowed to do an action
 //the active player can only be updated on the server-side!
-//this script however, is active on all clients
+//this script however, is active on all clients because it is needed for subscribing them from the player object
 public class TurnManager : NetworkBehaviour {
 
 	public static TurnManager instance;
@@ -35,7 +35,7 @@ public class TurnManager : NetworkBehaviour {
 		players.Add (player);
 
 		if (!player.isLocalPlayer)
-			TargetInitializeLocalGameInfo (player.connectionToClient, playerCount);
+			TargetInitializeClientGameInfo (player.connectionToClient, playerCount);
 		else
 			InitializeGameInfo (playerCount);
 
@@ -54,7 +54,7 @@ public class TurnManager : NetworkBehaviour {
 	}
 
 	[TargetRpc]
-	private void TargetInitializeLocalGameInfo(NetworkConnection target, int raftID){
+	private void TargetInitializeClientGameInfo(NetworkConnection target, int raftID){
 		InitializeGameInfo (raftID);
 	}
 
@@ -115,7 +115,7 @@ public class TurnManager : NetworkBehaviour {
 	}
 
 	[TargetRpc]
-	public void TargetShowGameResult(NetworkConnection target, string winningPlayer, int myScore, bool playerWon){
+	private void TargetShowGameResult(NetworkConnection target, string winningPlayer, int myScore, bool playerWon){
 		gameEndScript.ShowGameResult (winningPlayer, myScore, playerWon);
 	}
 }   
